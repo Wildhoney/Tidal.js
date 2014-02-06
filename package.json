@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Wildhoney/Socket.io-Benchmark",
   "dependencies": {
-    "socket.io-client": "~0.9.16"
+    "socket.io-client": "~0.9.16",
+    "connect": "~2.12.0"
   }
 }
