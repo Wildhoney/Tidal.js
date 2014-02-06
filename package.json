@@ -1,8 +1,8 @@
 {
-  "name": "socket.io-benchmark",
+  "name": "tidal",
   "version": "0.1.0",
   "description": "Stress testing Socket.io connections with user specified concurrency and memory profiling.",
-  "main": "dist/socket.io-benchmark.js",
+  "main": "bin/tidal.js",
   "scripts": {
     "test": "grunt test"
   },
@@ -14,6 +14,9 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Wildhoney/Socket.io-Benchmark/issues"
+  },
+  "bin": {
+    "tidal": "./bin/tidal.js"
   },
   "homepage": "https://github.com/Wildhoney/Socket.io-Benchmark",
   "dependencies": {
