@@ -1,0 +1,22 @@
+{
+  "name": "socket.io-benchmark",
+  "version": "0.1.0",
+  "description": "Stress testing Socket.io connections with user specified concurrency and memory profiling.",
+  "main": "dist/socket.io-benchmark.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wildhoney/Socket.io-Benchmark.git"
+  },
+  "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wildhoney/Socket.io-Benchmark/issues"
+  },
+  "homepage": "https://github.com/Wildhoney/Socket.io-Benchmark",
+  "dependencies": {
+    "socket.io-client": "~0.9.16"
+  }
+}
