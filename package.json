@@ -1,7 +1,7 @@
 {
   "name": "tidal",
   "version": "0.1.0",
-  "description": "Stress testing Socket.io connections with user specified concurrency and memory profiling.",
+  "description": "Socket.io benchmarking with realtime web-based statistics.",
   "main": "bin/tidal.js",
   "scripts": {
     "test": "grunt test"
@@ -11,7 +11,7 @@
     "url": "https://github.com/Wildhoney/Socket.io-Benchmark.git"
   },
   "author": "Adam Timberlake <adam.timberlake@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Wildhoney/Socket.io-Benchmark/issues"
   },
