@@ -3,6 +3,7 @@
     var io           = require('socket.io-client'),
         childProcess = require('child_process'),
         express      = require('express'),
+        glob         = require('glob'),
         app          = express();
 
     /**
