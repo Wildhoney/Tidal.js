@@ -11,14 +11,24 @@
 </head>
 <body ng-app="tidalApp">
 
-    <header>Tidal.js</header>
+    <header>
+        <img src="images/logo.png" alt="Tidal.js" />
+    </header>
 
-    <ul class="overview">
-        <li>
-            <var>24/100</var>
-            <label>Concurrency</label>
-        </li>
-    </ul>
+    <table>
+        <tr>
+            <th>Client</th>
+            <th>Strategy</th>
+            <th>Last Operation</th>
+            <th>Connected Time</th>
+        </tr>
+        <tr ng-repeat="client in clients">
+            <td>{{name}}</td>
+            <td>{{strategy}}</td>
+            <td>{{lastOperation}}</td>
+            <td>{{connectedTime}}</td>
+        </tr>
+    </table>
 
 </body>
 </html>

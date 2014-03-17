@@ -1,5 +1,6 @@
 @import "sections/header.css";
 @import "sections/overview.css";
+@import "sections/list.css";
 
 * {
     padding: 0;

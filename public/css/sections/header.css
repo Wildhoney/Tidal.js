@@ -1,8 +1,12 @@
 header {
-    background-color: rgba(0, 0, 0, .85);
-    height: 60px;
-    line-height: 60px;
+    background-color: rgb(45, 52, 53);
+    height: 90px;
+    line-height: 90px;
     width: 100%;
     color: white;
     padding-left: 20px;
+}
+
+header img {
+    margin-top: 24px;
 }
