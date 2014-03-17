@@ -23,7 +23,7 @@
     io.connect('http://' + options.remoteIp + ':' + options.remotePort);
 
     // Begin Express so the statistics are available from the `localPort`.
-    app.use(express.static('../public'));
+    app.use(express.static(__dirname + '/../public'));
     app.listen(options.localPort);
 
     // Open the statistics in the new user's browser.
