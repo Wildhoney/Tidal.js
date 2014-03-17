@@ -1,5 +1,5 @@
 {
-  "name": "tidal",
+  "name": "tidal.js",
   "version": "0.1.0",
   "description": "Socket.io benchmarking with real-time web-based statistics.",
   "main": "bin/tidal.js",
