@@ -1,9 +1,11 @@
 (function() {
 
+    "use strict";
+
     var io           = require('socket.io-client'),
         childProcess = require('child_process'),
         express      = require('express'),
-        glob         = require('glob'),
+//        glob         = require('glob'),
         app          = express();
 
     /**
