@@ -23,10 +23,15 @@
     <!--</header>-->
 
     <ul class="clients" ng-controller="ClientsController">
-        <li ng-repeat="client in clients | orderBy: sortProperty">
-            <img ng-src="{{client.user.picture}}" />
-        </li>
+
+        <svg ng-repeat="client in clients">
+        </svg>
+
+        <!--<li ng-repeat="client in clients | orderBy: sortProperty">-->
+            <!--<img ng-src="{{client.user.picture}}" />-->
+        <!--</li>-->
     </ul>
+
 
     <!--<table ng-controller="ClientsController">-->
         <!--<tr>-->
