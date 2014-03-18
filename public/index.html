@@ -18,28 +18,33 @@
 </head>
 <body ng-app="tidalApp">
 
-    <header>
-        <img src="images/logo.png" alt="Tidal.js" />
-    </header>
+    <!--<header>-->
+        <!--<img src="images/logo.png" alt="Tidal.js" />-->
+    <!--</header>-->
 
-    <table ng-controller="ClientsController">
-        <tr>
-            <th ng-click="setOrder('user.name.first')">Client</th>
-            <th>Strategy</th>
-            <th>Last Operation</th>
-            <th>Connected Time</th>
-        </tr>
-        <tr ng-repeat="client in clients | orderBy: sortProperty">
-            <td class="user">
-                <img ng-src="{{client.user.picture}}" />
-                <label>{{client.user.name.first}}</label>
-                <span class="id">{{client.id}}</span>
-            </td>
-            <td>Registration</td>
-            <td class="last-operation">register/user</td>
-            <td>52 seconds</td>
-        </tr>
-    </table>
+    <ul class="clients" ng-controller="ClientsController">
+        <li ng-repeat="client in clients | orderBy: sortProperty">
+            <img ng-src="{{client.user.picture}}" />
+        </li>
+    </ul>
+
+    <!--<table ng-controller="ClientsController">-->
+        <!--<tr>-->
+            <!--<th ng-click="setOrder('user.name.first')">Client</th>-->
+            <!--<th>Strategy</th>-->
+            <!--<th>Last Operation</th>-->
+            <!--<th>Connected Time</th>-->
+        <!--</tr>-->
+        <!--<tr ng-repeat="client in clients | orderBy: sortProperty">-->
+            <!--<td class="user">-->
+                <!--<label>{{client.user.name.first}}</label>-->
+                <!--<span class="id">{{client.id}}</span>-->
+            <!--</td>-->
+            <!--<td>Registration</td>-->
+            <!--<td class="last-operation">register/user</td>-->
+            <!--<td>52 seconds</td>-->
+        <!--</tr>-->
+    <!--</table>-->
 
 </body>
 </html>

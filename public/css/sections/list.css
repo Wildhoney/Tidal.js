@@ -1,66 +1,25 @@
-table {
+ul.clients {
+    list-style-type: none;
     width: 100%;
-    text-align: left;
-    border-collapse: collapse;
-}
-
-table tr th {
-    background-color: rgb(170, 167, 157);
-    color: white;
-    font-weight: 300;
-    font-size: 14px;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, .15);
-    height: 32px;
-    line-height: 32px;
-    padding: 0 12px;
-    border-right: 1px solid rgba(0, 0, 0, .15);
-}
-
-table tr th:last-of-type {
-    border-right: 0;
-}
-
-table tr td {
-    padding: 0 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, .15);
-}
-
-table tr td.user {
-    width: 20%;
-    padding-left: 0;
-    position: relative;
-}
-
-table tr td.user span.id {
+    height: 100%;
+    overflow: hidden;
     position: absolute;
-    right: 15px;
-    top: 20px;
-    width: 30px;
-    border-radius: 25px;
-    text-align: center;
-    color: rgba(0, 0, 0, .5);
-    font-size: 12px;
     background-color: rgba(0, 0, 0, .15);
-    float: right;
-    padding: 5px;
-    display: inline-block;
+    /*padding: 20px;*/
 }
 
-table tr td.user img {
+ul.clients li {
     float: left;
-    width: 64px;
-    height: 64px;
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    /*height: 200px;*/
+    overflow: hidden;
+    border: 2px solid white;
+    box-shadow: 0 0 40px rgba(0, 0, 0, .25);
+    /*border: 1px solid rgba(0, 0, 0, .25);*/
 }
 
-table tr td.user label {
-    float: left;
-    padding-left: 15px;
-    text-transform: capitalize;
-    height: 64px;
-    line-height: 64px;
-}
-
-table tr td.last-operation {
-    font-family: "Courier New", serif;
-    font-size: 14px;
+ul.clients li img {
+    width: 100%;
 }
