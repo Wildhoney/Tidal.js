@@ -1,21 +1,34 @@
-svg {
-    border: 1px solid red;
+section.clients {
+    float: left;
     width: 100%;
-    position: absolute;
     height: 100%;
+    background-color: rgba(0, 0, 0, .1);
 }
 
-svg circle {
-    fill: black ;
-    stroke: white;
-    stroke-width: 2px;
+section.clients ul {
+    list-style-type: none;
 }
 
-svg line {
-    stroke: rgba(0, 0, 0, .25);
-    stroke-width: 1px;
+section.clients ul li {
+    width: 20%;
+    /*padding: 5px 10px;*/
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    background-color: rgba(255, 255, 255, .25);
+    font-size: 12px;
+    text-transform: capitalize;
+    border-right: 1px solid rgba(0, 0, 0, .15);
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
 }
 
-svg image {
-    border-radius: 100px;
+section.clients ul li img {
+    height: 32px;
+    float: left;
+    margin-right: 10px;
+}
+
+section.clients ul li label {
+    background-color: white;
+    padding: 1px 10px;
 }
