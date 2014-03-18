@@ -13,11 +13,11 @@
     };
 
     var ioClient     = require('socket.io-client'),
-        ioServer     = require('socket.io').listen(options.localSocketPort),
         childProcess = require('child_process'),
         express      = require('express'),
 //        glob         = require('glob'),
         app          = express();
+                       require('socket.io').listen(options.localSocketPort);
 
     // Connect to the awaiting Socket.io server.
     ioClient.connect('http://' + options.remoteIp + ':' + options.remotePort);
