@@ -4,10 +4,17 @@
     <title>Tidal.js</title>
     <link rel="stylesheet" type="text/css" href="css/default.css" />
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic" rel="stylesheet" />
+
+    <!-- Bower dependencies! -->
     <script type="text/javascript" src="components/angular/angular.js"></script>
     <script type="text/javascript" src="components/underscore/underscore.js"></script>
     <script type="text/javascript" src="components/socket.io-client/dist/socket.io.js"></script>
+
+    <!-- Angular app! -->
     <script type="text/javascript" src="js/Application.js"></script>
+    <script type="text/javascript" src="js/controllers/ClientsController.js"></script>
+    <script type="text/javascript" src="js/services/Tidal.js"></script>
+
 </head>
 <body ng-app="tidalApp">
 
@@ -15,18 +22,22 @@
         <img src="images/logo.png" alt="Tidal.js" />
     </header>
 
-    <table>
+    <table ng-controller="ClientsController">
         <tr>
-            <th>Client</th>
+            <th ng-click="setOrder('user.name.first')">Client</th>
             <th>Strategy</th>
             <th>Last Operation</th>
             <th>Connected Time</th>
         </tr>
-        <tr ng-repeat="client in clients">
-            <td>{{name}}</td>
-            <td>{{strategy}}</td>
-            <td>{{lastOperation}}</td>
-            <td>{{connectedTime}}</td>
+        <tr ng-repeat="client in clients | orderBy: sortProperty">
+            <td class="user">
+                <img ng-src="{{client.user.picture}}" />
+                <label>{{client.user.name.first}}</label>
+                <span class="id">{{client.id}}</span>
+            </td>
+            <td>Registration</td>
+            <td class="last-operation">register/user</td>
+            <td>52 seconds</td>
         </tr>
     </table>
 

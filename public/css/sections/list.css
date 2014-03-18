@@ -19,3 +19,48 @@ table tr th {
 table tr th:last-of-type {
     border-right: 0;
 }
+
+table tr td {
+    padding: 0 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+}
+
+table tr td.user {
+    width: 20%;
+    padding-left: 0;
+    position: relative;
+}
+
+table tr td.user span.id {
+    position: absolute;
+    right: 15px;
+    top: 20px;
+    width: 30px;
+    border-radius: 25px;
+    text-align: center;
+    color: rgba(0, 0, 0, .5);
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, .15);
+    float: right;
+    padding: 5px;
+    display: inline-block;
+}
+
+table tr td.user img {
+    float: left;
+    width: 64px;
+    height: 64px;
+}
+
+table tr td.user label {
+    float: left;
+    padding-left: 15px;
+    text-transform: capitalize;
+    height: 64px;
+    line-height: 64px;
+}
+
+table tr td.last-operation {
+    font-family: "Courier New", serif;
+    font-size: 14px;
+}
