@@ -27,14 +27,14 @@
          */
         $scope.interval = 1500;
 
-        $interval(function interval() {
-
-            // Add a client!
-            tidal.addClient().then(function then(response) {
-                $scope.clients.push(response);
-            });
-
-        }, $scope.interval);
+//        $interval(function interval() {
+//
+//            // Add a client!
+//            tidal.addClient().then(function then(response) {
+//                $scope.clients.push(response);
+//            });
+//
+//        }, $scope.interval);
 
         /**
          * @method setOrder

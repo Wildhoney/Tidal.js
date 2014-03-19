@@ -1,34 +1,38 @@
 section.clients {
-    float: left;
-    width: 100%;
+    padding: 20px;
+    margin: auto;
+    display: table;
     height: 100%;
-    background-color: rgba(0, 0, 0, .1);
+    width: 100%;
 }
 
-section.clients ul {
-    list-style-type: none;
+section.clients div.container {
+    display: table-row;
+    border-collapse: collapse;
 }
 
-section.clients ul li {
-    width: 20%;
-    /*padding: 5px 10px;*/
-    float: left;
-    height: 32px;
-    line-height: 32px;
-    background-color: rgba(255, 255, 255, .25);
-    font-size: 12px;
-    text-transform: capitalize;
-    border-right: 1px solid rgba(0, 0, 0, .15);
-    border-bottom: 1px solid rgba(0, 0, 0, .15);
+section.clients div.container div.inner {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 }
 
-section.clients ul li img {
-    height: 32px;
-    float: left;
-    margin-right: 10px;
-}
-
-section.clients ul li label {
+section.clients div.container div.inner div.squares {
+    border: 1px solid rgba(0, 0, 0, .2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
     background-color: white;
-    padding: 1px 10px;
+    padding: 1px 0 0 1px;
+    overflow: hidden;
+    margin: auto;
+    width: 103px;
+    height: 103px;
+}
+
+section.clients div.container div.inner div.squares div.client {
+    float: left;
+    width: 20px;
+    height: 20px;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+    background-color: rgba(0, 0, 0, .1);
 }
