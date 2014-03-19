@@ -1,5 +1,7 @@
 (function($app) {
 
+    "use strict";
+
     /**
      * @service Tidal
      * @author Adam Timberlake

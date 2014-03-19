@@ -1,5 +1,7 @@
 (function($app, $yaml) {
 
+    "use strict";
+
     /**
      * @controller StrategyController
      * @author Adam Timberlake

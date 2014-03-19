@@ -1,13 +1,15 @@
 (function($app) {
 
+    "use strict";
+
     /**
      * @controller ApplicationController
      * @author Adam Timberlake
      * @link http://github.com/Wildhoney/Tidal.js
      */
-    $app.controller('ApplicationController', ['$scope', '$interval', 'tidal',
+    $app.controller('ApplicationController', ['$scope',
 
-    function applicationController($scope, $interval, tidal) {
+    function applicationController($scope) {
 
         /**
          * @property isReady

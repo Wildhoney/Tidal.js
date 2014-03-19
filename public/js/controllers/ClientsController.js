@@ -1,5 +1,7 @@
 (function($app) {
 
+    "use strict";
+
     /**
      * @controller ClientsController
      * @author Adam Timberlake

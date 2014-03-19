@@ -1,18 +1,20 @@
 (function($app, $io) {
 
+    "use strict";
+
     /**
      * @service ClientModel
      * @author Adam Timberlake
      * @link http://github.com/Wildhoney/Tidal.js
      */
-    $app.service('ClientModel', ['$q', '$http', function ClientModel($q, $http) {
+    $app.service('ClientModel', [function ClientModel() {
 
         /**
          * @model client
          * @param model {Object}
          * @constructor
          */
-        function ClientModel(model) {
+        function Client(model) {
             this.model  = model;
             this.socket = $io.connect('http://localhost:3001');
         }
@@ -21,7 +23,7 @@
          * @property prototype
          * @type {Object}
          */
-        ClientModel.prototype = {
+        Client.prototype = {
 
             /**
              * @property model
@@ -123,12 +125,12 @@
              * @return {void}
              */
             setInterruptEvents: function setInterruptEvents(events) {
-
+                return events;
             }
 
         };
 
-        return ClientModel;
+        return Client;
 
     }]);
 
