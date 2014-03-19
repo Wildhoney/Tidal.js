@@ -13,14 +13,23 @@
 
     <!-- Angular app! -->
     <script type="text/javascript" src="js/Application.js"></script>
+    <script type="text/javascript" src="js/controllers/ApplicationController.js"></script>
     <script type="text/javascript" src="js/controllers/ClientsController.js"></script>
     <script type="text/javascript" src="js/controllers/StrategyController.js"></script>
     <script type="text/javascript" src="js/services/Tidal.js"></script>
 
 </head>
-<body ng-app="tidalApp" ng-controller="StrategyController">
+<body ng-app="tidalApp" ng-controller="ApplicationController">
 
-    <section class="clients" ng-controller="ClientsController">
+    <section ng-controller="StrategyController">
+
+        <section class="clients" ng-controller="ClientsController">
+
+            Clients: {{clients.length}}
+            <br />
+            Strategies: {{strategies.length}}
+
+        </section>
 
     </section>
 
