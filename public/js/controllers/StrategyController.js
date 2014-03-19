@@ -15,6 +15,12 @@
         $scope.strategies = { length: 0 };
 
         /**
+         * @property list
+         * @type {Array}
+         */
+        $scope.list = [];
+
+        /**
          * @property events
          * @type {Object}
          */
@@ -60,6 +66,19 @@
         });
 
         /**
+         * @method pickStrategy
+         * @return {Object}
+         */
+        $scope.pickStrategy = function pickStrategy() {
+
+            var position = Math.round(Math.random() * ($scope.list.length - 1)),
+                index    = $scope.list[position];
+
+           return $scope.strategies[index];
+
+        };
+
+        /**
          * @method loadStrategy
          * @param strategy {Object}
          * @param deferred {Object}
@@ -82,6 +101,15 @@
 
                     // Initialise the namespace for this event.
                     $scope.events[first.type][first.event] = [];
+
+                }
+
+                // Clients need a strategy to start, otherwise they'll simply wait for any "on" events
+                // which are initialised by the server.
+                if (first.type === 'emit' && !_.contains($scope.list, first.event)) {
+
+                    // Add to the list to make picking a random strategy easier.
+                    $scope.list.push(index);
 
                 }
 

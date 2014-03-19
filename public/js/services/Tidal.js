@@ -21,12 +21,11 @@
          */
         service.addClient = function addClient() {
 
-            var deferred = $q.defer(),
-                socket   = io.connect('http://localhost:3001');
+            var deferred = $q.defer();
 
             // Fetch a random user to impersonate real people.
             $http.get('http://api.randomuser.me/', {}).then(function (response) {
-                deferred.resolve({ id: service.index++, user: response.data.results[0].user, socket: socket });
+                deferred.resolve({ id: service.index++, user: response.data.results[0].user });
             });
 
             return deferred.promise;

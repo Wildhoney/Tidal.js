@@ -1,5 +1,5 @@
 # Begin the process of signing the user into their account.
-- event: user/sign-in
+- event: user/register
   type: emit
   with:
     username: Wildhoney,
