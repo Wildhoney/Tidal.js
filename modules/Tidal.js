@@ -15,11 +15,28 @@
     Tidal.prototype = {
 
         /**
+         * @method _assert
+         * @param condition {Boolean|Number|Text}
+         * @param message {String}
+         * @return {void}
+         * @private
+         */
+        _assert: function _assert(condition, message) {
+
+            if (!condition) {
+                throw message;
+            }
+
+        },
+
+        /**
          * @method addResponder
          * @param options {Object}
          * @return {void}
          */
         addResponder: function addResponder(options) {
+
+
 
         },
 
