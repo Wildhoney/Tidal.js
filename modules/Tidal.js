@@ -15,6 +15,12 @@
     Tidal.prototype = {
 
         /**
+         * @property responders
+         * @type {Array}
+         */
+        responders: [],
+
+        /**
          * @method _assert
          * @param condition {Boolean|Number|Text}
          * @param message {String}
@@ -24,8 +30,18 @@
         _assert: function _assert(condition, message) {
 
             if (!condition) {
-                throw message;
+                throw 'Tidal.js: ' + message;
             }
+
+        },
+
+        /**
+         * Start the whole process of mimicking actual users using our WebSocket environment.
+         *
+         * @method start
+         * @return {void}
+         */
+        start: function start() {
 
         },
 
@@ -36,7 +52,12 @@
          */
         addResponder: function addResponder(options) {
 
+            // Necessities!
+            this._assert(options.on, 'You missed the `on` declaration!');
+            this._assert(options.respond, 'You missed the `respond` declaration!');
 
+            // Looking good...
+            this.responders.push(options);
 
         },
 

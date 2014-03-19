@@ -1,0 +1,25 @@
+emit:
+  - event: user/sign-in
+    with:
+      - username: Wildhoney,
+        password: myPassword123
+
+
+on:
+  - event: user/signed-in
+    store: signed-in-data
+    expect:
+      - loggedIn: true
+
+
+emit:
+  - event: user/fetch-credentials
+    with:
+      - user: {{signed-in-data.id}}
+
+
+on:
+  - event: user/retrieved-credentials
+    expect:
+      - username: Wildhoney
+    then: disconnect
