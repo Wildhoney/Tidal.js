@@ -18,8 +18,19 @@
         path         = require('path'),
         glob         = require('glob'),
         fs           = require('fs'),
-        app          = express();
-                       require('socket.io').listen(options.localSocketPort);
+        app          = express(),
+        ioServer     = require('socket.io').listen(options.localSocketPort);
+
+    ioServer.sockets.on('connection', function (socket) {
+
+        socket.on('user/sign-in', function (options) {
+            console.log(options);
+
+            socket.emit('user/signed-in', { loggedIn: true });
+
+        });
+
+    });
 
     // Connect to the awaiting Socket.io server.
     ioClient.connect('http://' + options.remoteIp + ':' + options.remotePort);

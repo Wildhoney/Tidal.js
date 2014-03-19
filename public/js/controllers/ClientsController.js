@@ -38,9 +38,7 @@
                     // that could interrupt that event.
                     var client = new ClientModel(model);
                     client.assignTask($scope.pickStrategy());
-                    client.setInterruptEvents($scope.events.on);
-
-                    console.log(client);
+//                    client.setInterruptEvents($scope.events.on);
 
                 });
 
