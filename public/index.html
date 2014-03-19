@@ -9,14 +9,16 @@
     <script type="text/javascript" src="components/angular/angular.js"></script>
     <script type="text/javascript" src="components/underscore/underscore.js"></script>
     <script type="text/javascript" src="components/socket.io-client/dist/socket.io.js"></script>
+    <script type="text/javascript" src="components/js-yaml/js-yaml.js"></script>
 
     <!-- Angular app! -->
     <script type="text/javascript" src="js/Application.js"></script>
     <script type="text/javascript" src="js/controllers/ClientsController.js"></script>
+    <script type="text/javascript" src="js/controllers/StrategyController.js"></script>
     <script type="text/javascript" src="js/services/Tidal.js"></script>
 
 </head>
-<body ng-app="tidalApp">
+<body ng-app="tidalApp" ng-controller="StrategyController">
 
     <section class="clients" ng-controller="ClientsController">
 
