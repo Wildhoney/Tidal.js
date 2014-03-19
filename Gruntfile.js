@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
-            all: 'bin/tidal.js',
+            all: ['bin/tidal.js', 'js/**/*.js', 'js/*.js'],
             options: {
                 jshintrc: '.jshintrc'
             }
