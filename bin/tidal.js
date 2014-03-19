@@ -23,10 +23,10 @@
     ioClient.connect('http://' + options.remoteIp + ':' + options.remotePort);
 
     // Begin Express so the statistics are available from the `localPort`.
-    app.use(express.static(__dirname + '/../public'));
+    app.use(express.static(__dirname + '/..'));
     app.listen(options.localHttpPort);
 
     // Open the statistics in the new user's browser.
-    childProcess.spawn('open', ['http://localhost:' + options.localHttpPort]);
+    childProcess.spawn('open', ['http://localhost:' + options.localHttpPort + '/public']);
 
 })();
