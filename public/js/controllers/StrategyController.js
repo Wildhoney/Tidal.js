@@ -8,7 +8,6 @@
     $app.controller('StrategyController', ['$scope', '$http',
 
     function strategyController($scope, $http) {
-
         /**
          * @property strategies
          * @type {Object}
@@ -28,18 +27,39 @@
          */
         $scope.index = 1000;
 
-        $http.get('../../strategies/login.yaml').then(function then(response) {
+        $http.get('../../strategies/strategies.conf').then(function (response) {
 
-            var index = (++$scope.index).toString(16);
-            $scope.strategies[index] = $yaml.load(response.data);
-            var first = $scope.strategies[index][0];
+            // Find all of the available strategy files.
+            var strategies = response.data.split(/,/ig);
 
-            // It can only begin this strategy if it's an "on" event, otherwise it's part
-            // of a strategy that's based on the user initialisation, rather than the backend
-            // initialisation.
-            if (first.type === 'on') {
-                $scope.events[first.event] = index;
-            }
+            _.forEach(strategies, function forEach(strategy) {
+
+                $http.get('../../strategies/' + strategy).then(function then(response) {
+
+                    var index = (++$scope.index).toString(16);
+                    $scope.strategies[index] = $yaml.load(response.data);
+                    var first = $scope.strategies[index][0];
+
+                    // It can only begin this strategy if it's an "on" event, otherwise it's part
+                    // of a strategy that's based on the user initialisation, rather than the backend
+                    // initialisation.
+                    if (first.type !== 'on') {
+
+                        if (typeof $scope.events[first.event] === 'undefined') {
+
+                            // Initialise the namespace for this event.
+                            $scope.events[first.event] = [];
+
+                        }
+
+                        // Push the index of the current event into the array.
+                        $scope.events[first.event].push(index);
+
+                    }
+
+                });
+
+            });
 
         });
 

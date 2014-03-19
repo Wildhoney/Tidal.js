@@ -1,0 +1,27 @@
+# Begin the process of signing the user into their account.
+- event: user/sign-in
+  type: emit
+  with:
+    username: Wildhoney,
+    password: myPassword123
+
+
+# Listen for the successful signed in event.
+- event: user/signed-in
+  type: on
+  store: signed-in-data
+  expect:
+    loggedIn: true
+
+
+# Fetch the credentials from the back-end.
+- event: user/fetch-credentials
+  with:
+    user: {{signed-in-data.id}}
+
+
+# Let the Node.js server know we received them, and then disconnect.
+- event: user/retrieved-credentials
+  expect:
+    username: Wildhoney
+  then: disconnect
