@@ -38,7 +38,7 @@
                 // that could defer that strategy.
                 var client = new Client();
                 client.assignStrategy($scope.pickStrategy());
-//                client.setInterruptEvents($scope.events.on);
+                client.assignResponders($scope.events.on);
 
             }
 

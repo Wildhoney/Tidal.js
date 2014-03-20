@@ -44,6 +44,12 @@
             model: {},
 
             /**
+             * @property responders
+             * @type {Array}
+             */
+            responders: [],
+
+            /**
              * @property strategy
              * @type {Object}
              */
@@ -127,19 +133,19 @@
 
                 }, this));
 
-            }
+            },
 
-//            /**
-//             * Assign events that can be broadcasted by the server, which could interrupt
-//             * any strategies currently being executed.
-//             *
-//             * @method setInterruptEvents
-//             * @param events
-//             * @return {void}
-//             */
-//            setInterruptEvents: function setInterruptEvents(events) {
-//                return events;
-//            }
+            /**
+             * Assign events that can be broadcasted by the server, which could defer
+             * any strategies currently being processed.
+             *
+             * @method assignResponders
+             * @param responders {Array}
+             * @return {void}
+             */
+            assignResponders: function assignResponders(responders) {
+                this.responders = responders;
+            }
 
         };
 
