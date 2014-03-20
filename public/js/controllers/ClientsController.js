@@ -39,7 +39,7 @@
                     // Create a new client model, giving it a task to complete, and any events
                     // that could interrupt that event.
                     var client = new ClientModel(model);
-                    client.assignTask($scope.pickStrategy());
+                    client.assignStrategy($scope.pickStrategy());
 //                    client.setInterruptEvents($scope.events.on);
 
                 });

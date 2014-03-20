@@ -32,10 +32,10 @@
             model: {},
 
             /**
-             * @property task
+             * @property strategy
              * @type {Object}
              */
-            task: {},
+            strategy: {},
 
             /**
              * @property socket
@@ -44,23 +44,57 @@
             socket: {},
 
             /**
-             * Assign a task that the client should complete.
+             * Assign a strategy that the client should be responsible for completing.
              *
-             * @method assignTask
-             * @param task {Object}
+             * @method assignStrategy
+             * @param strategy {Object}
              * @return {void}
              */
-            assignTask: function assignTask(task) {
-                this.task = task;
-                this.processTask();
+            assignStrategy: function assignStrategy(strategy) {
+                this.strategy = strategy;
+                this._processStrategy();
             },
 
             /**
-             * @method awaitEvent
+             * Begin or continue processing the strategy that the client is responsible for.
+             *
+             * @method _processStrategy
+             * @return {void}
+             * @private
+             */
+            _processStrategy: function _processStrategy() {
+
+                // While there are tasks within the strategy to be completed.
+                while (this.strategy.length) {
+
+                    // Take the first step from the strategy.
+                    var task = this.strategy.shift();
+
+                    if (task.type === 'on') {
+
+                        // If the type is "on" then we need to wait for the server to
+                        // send the event to us.
+                        this._awaitEvent(task);
+                        break;
+
+                    }
+
+                    // Otherwise we can emit the event immediately.
+                    this.socket.emit(task.event, task.with || {});
+
+                    console.log(task.event);
+
+                }
+
+            },
+
+            /**
+             * @method _awaitEvent
              * @param step {Object}
              * @return {void}
+             * @private
              */
-            awaitEvent: function awaitEvent(step) {
+            _awaitEvent: function _awaitEvent(step) {
 
                 this.socket.on(step.event, _.bind(function eventReceived(data) {
 
@@ -77,56 +111,24 @@
 
                     }
 
-                    // Continue the processing of the task.
-                    this.processTask();
+                    // Continue the processing of the strategy.
+                    this._processStrategy();
 
                 }, this));
 
             },
 
-            /**
-             * Begin processing the task the client was given.
-             *
-             * @method processTask
-             * @return {void}
-             */
-            processTask: function processTask() {
-
-                do {
-
-                    // Shift the first step from the task off of the array.
-                    var step = this.task.shift();
-
-                    if (step.type === 'on') {
-
-                        // If the type is "on" then we need to wait for the server to
-                        // send the event to us.
-                        this.awaitEvent(step);
-                        break;
-
-                    }
-
-                    console.log(step.event);
-
-                    // Otherwise we can emit the event immediately.
-                    this.socket.emit(step.event, step.with || {});
-
-                } while (this.task.length);
-
-
-            },
-
-            /**
-             * Assign events that can be broadcasted by the server, which could interrupt
-             * any strategies currently being executed.
-             *
-             * @method setInterruptEvents
-             * @param events
-             * @return {void}
-             */
-            setInterruptEvents: function setInterruptEvents(events) {
-                return events;
-            }
+//            /**
+//             * Assign events that can be broadcasted by the server, which could interrupt
+//             * any strategies currently being executed.
+//             *
+//             * @method setInterruptEvents
+//             * @param events
+//             * @return {void}
+//             */
+//            setInterruptEvents: function setInterruptEvents(events) {
+//                return events;
+//            }
 
         };
 
