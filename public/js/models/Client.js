@@ -81,6 +81,18 @@
             },
 
             /**
+             * Assign events that can be broadcasted by the server, which could defer
+             * any strategies currently being processed.
+             *
+             * @method assignResponders
+             * @param responders {Array}
+             * @return {void}
+             */
+            assignResponders: function assignResponders(responders) {
+                this.responders = responders;
+            },
+
+            /**
              * Begin or continue processing the strategy that the client is responsible for.
              *
              * @method _processStrategy
@@ -153,7 +165,7 @@
                                 $rootScope.$broadcast('client/invalid_property_value', {
                                     client: this,
                                     property: key,
-                                    expected: expect[key],
+                                    expected: step.expect[key],
                                     actual: data[key]
                                 });
 
@@ -174,18 +186,6 @@
 
                 }, this));
 
-            },
-
-            /**
-             * Assign events that can be broadcasted by the server, which could defer
-             * any strategies currently being processed.
-             *
-             * @method assignResponders
-             * @param responders {Array}
-             * @return {void}
-             */
-            assignResponders: function assignResponders(responders) {
-                this.responders = responders;
             }
 
         };

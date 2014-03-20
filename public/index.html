@@ -25,9 +25,34 @@
 
         <section class="clients" ng-controller="ClientsController">
 
-            Clients: {{clients.length}}
-            <br />
-            Strategies: {{strategies.length}}
+            <!--Clients: {{clients.length}}-->
+            <!--<br />-->
+            <!--Strategies: {{strategies.length}}-->
+
+            <!--<h3>Messages ({{messages.length}})</h3>-->
+
+            <table>
+                <tr>
+                    <th class="avatar"></th>
+                    <th class="client"></th>
+                    <th class="label"></th>
+                    <th class="message"></th>
+                </tr>
+                <tr ng-repeat="message in messages">
+                    <td><img ng-src="{{message.client.model.picture}}" /></td>
+                    <td>
+                        <div class="name">
+                            {{message.client.model.name.first}}
+                            {{message.client.model.name.last}}
+                        </div>
+                        <div class="strategy">Strategy: <var>login.yaml</var></div>
+                    </td>
+                    <td><label class="failure">Failure</label></td>
+                    <td>
+                        Property <var>{{message.property}}</var> expected to be <var>{{message.expected}}</var> but got <var>{{message.actual}}</var>.
+                    </td>
+                </tr>
+            </table>
 
         </section>
 

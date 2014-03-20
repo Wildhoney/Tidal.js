@@ -18,6 +18,12 @@
         $scope.clients = [];
 
         /**
+         * @property messages
+         * @type {Array}
+         */
+        $scope.messages = [];
+
+        /**
          * @property id
          * @type {Number}
          */
@@ -45,6 +51,12 @@
 
             }
 
+        });
+
+        // When an assertion fails.
+        $scope.$on('client/invalid_property_value', function (event, feedback) {
+            $scope.messages.push(feedback);
+            $scope.$apply();
         });
 
         /**

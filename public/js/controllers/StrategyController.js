@@ -76,7 +76,7 @@
             var position = Math.round(Math.random() * ($scope.list.length - 1)),
                 index    = $scope.list[position];
 
-           return $scope.strategies[index];
+           return _.clone($scope.strategies[index]);
 
         };
 

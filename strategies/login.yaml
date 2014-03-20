@@ -11,7 +11,7 @@
   type: on
   store: signed_in_data
   expect:
-    loggedIn: true
+    loggedIn: false
 
 
 # Fetch the credentials from the back-end.
