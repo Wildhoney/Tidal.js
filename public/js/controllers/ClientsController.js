@@ -36,9 +36,9 @@
 
                 // Create a new client model, giving it a strategy to complete, and any events
                 // that could defer that strategy.
-                var client = new Client(model);
+                var client = new Client();
                 client.assignStrategy($scope.pickStrategy());
-//                    client.setInterruptEvents($scope.events.on);
+//                client.setInterruptEvents($scope.events.on);
 
             }
 
