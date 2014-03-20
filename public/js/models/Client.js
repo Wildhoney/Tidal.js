@@ -7,7 +7,9 @@
      * @author Adam Timberlake
      * @link http://github.com/Wildhoney/Tidal.js
      */
-    $app.service('Client', ['$http', function Client($http) {
+    $app.service('Client', ['$rootScope', '$http', '$interpolate',
+
+    function Client($rootScope, $http, $interpolate) {
 
         /**
          * @model ClientModel
@@ -56,6 +58,12 @@
             strategy: {},
 
             /**
+             * @property memory
+             * @type {Object}
+             */
+            memory: {},
+
+            /**
              * @property socket
              * @type {Object}
              */
@@ -96,10 +104,27 @@
 
                     }
 
-                    // Otherwise we can emit the event immediately.
-                    this.socket.emit(task.event, task.with || {});
+                    var data = {};
 
-                    console.log(task.event);
+                    if (task.with) {
+
+                        // Configure the data to be sent with the request if it has been defined.
+                        // We also need to interpolate the data with anything that may be stored
+                        // in the `memory` property from previous requests.
+                        for (var key in task.with) {
+
+                            if (task.with.hasOwnProperty(key)) {
+
+                                // Interpolate the data!
+                                data[key] = $interpolate(task.with[key])(this.memory);
+
+                            }
+                        }
+
+                    }
+
+                    // Otherwise we can emit the event immediately.
+                    this.socket.emit(task.event, data);
 
                 }
 
@@ -122,10 +147,26 @@
                         // The usual suspect!
                         if (step.expect.hasOwnProperty(key)) {
 
-                            console.log(step.expect[key] === data[key]);
+                            if (step.expect[key] !== data[key]) {
+
+                                // Throw an error that the client got an invalid value.
+                                $rootScope.$broadcast('client/invalid_property_value', {
+                                    client: this,
+                                    property: key,
+                                    expected: expect[key],
+                                    actual: data[key]
+                                });
+
+                            }
 
                         }
 
+                    }
+
+                    if (step.store) {
+
+                        // Store this is the `store` property has been defined.
+                        this.memory[step.store] = data;
                     }
 
                     // Continue the processing of the strategy.
