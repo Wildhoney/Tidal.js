@@ -3,20 +3,32 @@
     "use strict";
 
     /**
-     * @service ClientModel
+     * @service Client
      * @author Adam Timberlake
      * @link http://github.com/Wildhoney/Tidal.js
      */
-    $app.service('ClientModel', [function ClientModel() {
+    $app.service('Client', ['$http', function Client($http) {
 
         /**
-         * @model client
+         * @model ClientModel
          * @param model {Object}
          * @constructor
          */
-        function Client(model) {
+        function ClientModel(model) {
             this.model  = model;
             this.socket = $io.connect('http://localhost:3001');
+
+            // Fetch a random user to impersonate real people.
+            $http.get('http://api.randomuser.me/', {}).then(_.bind(function (response) {
+
+                // Assign the user to the client model.
+                this.model = response.data.results[0].user;
+
+                // Begin the process of processing the assigned strategy.
+                this._processStrategy();
+
+            }, this));
+
         }
 
         /**
@@ -52,7 +64,6 @@
              */
             assignStrategy: function assignStrategy(strategy) {
                 this.strategy = strategy;
-                this._processStrategy();
             },
 
             /**
@@ -116,7 +127,7 @@
 
                 }, this));
 
-            },
+            }
 
 //            /**
 //             * Assign events that can be broadcasted by the server, which could interrupt
@@ -132,7 +143,7 @@
 
         };
 
-        return Client;
+        return ClientModel;
 
     }]);
 

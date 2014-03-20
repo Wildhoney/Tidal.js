@@ -7,9 +7,9 @@
      * @author Adam Timberlake
      * @link http://github.com/Wildhoney/Tidal.js
      */
-    $app.controller('ClientsController', ['$scope', '$interval', 'tidal', 'ClientModel',
+    $app.controller('ClientsController', ['$scope', '$interval', 'tidal', 'Client',
 
-    function clientsController($scope, $interval, tidal, ClientModel) {
+    function clientsController($scope, $interval, tidal, Client) {
 
         /**
          * @property clients
@@ -34,15 +34,11 @@
 
             if (value) {
 
-                tidal.addClient().then(function then(model) {
-
-                    // Create a new client model, giving it a task to complete, and any events
-                    // that could interrupt that event.
-                    var client = new ClientModel(model);
-                    client.assignStrategy($scope.pickStrategy());
+                // Create a new client model, giving it a strategy to complete, and any events
+                // that could defer that strategy.
+                var client = new Client(model);
+                client.assignStrategy($scope.pickStrategy());
 //                    client.setInterruptEvents($scope.events.on);
-
-                });
 
             }
 
