@@ -35,7 +35,7 @@
          * @property prototype
          * @type {Object}
          */
-        Client.prototype = {
+        ClientModel.prototype = {
 
             /**
              * @property model

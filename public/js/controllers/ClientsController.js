@@ -7,9 +7,9 @@
      * @author Adam Timberlake
      * @link http://github.com/Wildhoney/Tidal.js
      */
-    $app.controller('ClientsController', ['$scope', '$interval', 'tidal', 'Client',
+    $app.controller('ClientsController', ['$scope', '$interval', 'Client',
 
-    function clientsController($scope, $interval, tidal, Client) {
+    function clientsController($scope, $interval, Client) {
 
         /**
          * @property clients
