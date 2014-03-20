@@ -40,6 +40,9 @@
                 client.assignStrategy($scope.pickStrategy());
                 client.assignResponders($scope.events.on);
 
+                // Add the new client into the array.
+                $scope.clients.push(client);
+
             }
 
         });
