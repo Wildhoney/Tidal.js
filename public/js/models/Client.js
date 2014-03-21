@@ -102,10 +102,10 @@
             _processStrategy: function _processStrategy() {
 
                 // While there are tasks within the strategy to be completed.
-                while (this.strategy.length) {
+                while (this.strategy.steps.length) {
 
                     // Take the first step from the strategy.
-                    var task = this.strategy.shift();
+                    var task = this.strategy.steps.shift();
 
                     if (task.type === 'on') {
 

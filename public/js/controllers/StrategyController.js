@@ -82,21 +82,27 @@
 
         /**
          * @method loadStrategy
-         * @param strategy {Object}
+         * @param filename {String}
          * @param deferred {Object}
          * @return {void}
          */
-        $scope.loadStrategy = function loadStrategy(strategy, deferred) {
+        $scope.loadStrategy = function loadStrategy(filename, deferred) {
 
-            $http.get($scope.path + strategy, {}).then(function then(response) {
+            $http.get($scope.path + filename, {}).then(function then(response) {
 
                 // Update the `length` property of the object.
                 $scope.strategies.length++;
 
                 // Determine its index, and find the first strategy.
                 var index = (++$scope.index).toString(16);
-                $scope.strategies[index] = $yaml.load(response.data);
-                var first = $scope.strategies[index][0];
+
+                // Configure the meta properties, and load the strategies.
+                $scope.strategies[index] = {};
+                $scope.strategies[index].index = index;
+                $scope.strategies[index].document = filename;
+                $scope.strategies[index].steps = $yaml.load(response.data);
+
+                var first = $scope.strategies[index].steps[0];
 
                 // Add the event to the list so that a client can choose one.
                 if (typeof $scope.events[first.type][first.event] === 'undefined') {
