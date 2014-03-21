@@ -53,11 +53,25 @@
 
         });
 
-        // When an assertion fails.
-        $scope.$on('client/invalid_property_value', function (event, feedback) {
+        /**
+         * @method receivedFeedback
+         * @param event {Object}
+         * @param feedback {Object}
+         * @return {void}
+         */
+        $scope.receivedFeedback = function receivedFeedback(event, feedback) {
+
+            // Find the partial that will output the message we're after.
+            feedback.partial = 'partials/messages/' + feedback.type + '.html';
+
             $scope.messages.push(feedback);
             $scope.$apply();
-        });
+
+        };
+
+        // Various types of client feedback events.
+        $scope.$on('client/invalid_property_value', $scope.receivedFeedback);
+        $scope.$on('client/completed_strategy', $scope.receivedFeedback);
 
         /**
          * @method setOrder

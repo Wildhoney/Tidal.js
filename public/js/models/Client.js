@@ -12,6 +12,18 @@
     function Client($rootScope, $http, $interpolate) {
 
         /**
+         * @constant ASSERTION_FAILED
+         * @type {String}
+         */
+        var ASSERTION_FAILED = 'assertion';
+
+        /**
+         * @constant STRATEGY_COMPLETED
+         * @type {String}
+         */
+        var STRATEGY_COMPLETED = 'completed';
+
+        /**
          * @model ClientModel
          * @param model {Object}
          * @constructor
@@ -101,6 +113,19 @@
              */
             _processStrategy: function _processStrategy() {
 
+                // Determine if we've completed the assigned strategy.
+                if (this.strategy.steps.length === 0) {
+
+                    $rootScope.$broadcast('client/completed_strategy', {
+                        client: this,
+                        type: STRATEGY_COMPLETED,
+                        result: 'success'
+                    });
+
+                    return;
+
+                }
+
                 // While there are tasks within the strategy to be completed.
                 while (this.strategy.steps.length) {
 
@@ -164,6 +189,8 @@
                                 // Throw an error that the client got an invalid value.
                                 $rootScope.$broadcast('client/invalid_property_value', {
                                     client: this,
+                                    type: ASSERTION_FAILED,
+                                    result: 'failure',
                                     property: key,
                                     expected: step.expect[key],
                                     actual: data[key]

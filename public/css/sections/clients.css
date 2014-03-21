@@ -49,6 +49,10 @@ section.clients table tr td div.name {
     font-weight: 600;
 }
 
+.capitalise {
+    text-transform: capitalize;
+}
+
 section.clients table tr td var {
     font-style: normal;
     color: purple;
@@ -62,10 +66,18 @@ section.clients table tr td img {
     border-radius: 64px;
 }
 
-section.clients table tr td label.failure {
+section.clients table tr td label {
     padding: 5px 15px;
     border-radius: 4px;
-    background-color: #e2b0c2;
+    text-transform: capitalize;
+}
+
+section.clients table tr td label.failure {
     color: #664450;
     background: -webkit-linear-gradient(top, #efc8d6 0%, #e2b0c2 100%);
+}
+
+section.clients table tr td label.success {
+    color: #475a3e;
+    background: -webkit-linear-gradient(top, #bfdfaf 0%, #a8cc96 100%);
 }

@@ -47,10 +47,8 @@
                         </div>
                         <div class="strategy">Strategy: <var>{{message.client.strategy.document}}</var></div>
                     </td>
-                    <td><label class="failure">Failure</label></td>
-                    <td>
-                        Property <var>{{message.property}}</var> expected to be <var>{{message.expected}}</var> but got <var>{{message.actual}}</var>.
-                    </td>
+                    <td><label class="{{message.result}}">{{message.result}}</label></td>
+                    <td ng-include="message.partial"></td>
                 </tr>
             </table>
 

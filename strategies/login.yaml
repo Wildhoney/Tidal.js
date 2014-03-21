@@ -11,19 +11,19 @@
   type: on
   store: signed_in_data
   expect:
-    loggedIn: false
+    loggedIn: true
 
 
 # Fetch the credentials from the back-end.
-- event: user/fetch-credentials
-  type: emit
-  with:
-    user: '{{signed_in_data.loggedIn}}'
-
-
-# Let the Node.js server know we received them, and then disconnect.
-- event: user/retrieved-credentials
-  type: on
-  expect:
-    username: Wildhoney
-  then: disconnect
+#- event: user/fetch-credentials
+#  type: emit
+#  with:
+#    user: '{{signed_in_data.loggedIn}}'
+#
+#
+## Let the Node.js server know we received them, and then disconnect.
+#- event: user/retrieved-credentials
+#  type: on
+#  expect:
+#    username: Wildhoney
+#  then: disconnect
