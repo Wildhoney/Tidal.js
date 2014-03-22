@@ -12,26 +12,7 @@ Getting Started
  * Install all dependencies: `npm install`, `bower install`;
  * Run benchmarking with `tidal example.com:8889`;
 
-Adding Responder
+Adding Strategies
 --------
 
-Basic responder that listens for an event (`on`), and replies with a response (`respond`), with some content (`with`).
-
-```javascript
-tidal.addResponder({
-    on: 'content/updated',
-    respond: 'content/updated/acknowledged',
-    with: { receipt: 01234 }
-});
-```
-
-After the response has been sent we can begin a strategy.
-
-```javascript
-tidal.addResponder({
-    on: 'content/updated',
-    respond: 'content/updated/acknowledged',
-    with: { receipt: 01234 },
-    then: someStrategy
-});
-```
+Tidal uses YAML documents to describe the required strategies. There are two types, with different options &ndash; events sent, and events received.
