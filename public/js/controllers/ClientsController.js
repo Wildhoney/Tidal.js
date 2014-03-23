@@ -7,15 +7,21 @@
      * @author Adam Timberlake
      * @link http://github.com/Wildhoney/Tidal.js
      */
-    $app.controller('ClientsController', ['$scope', '$interval', 'Client',
+    $app.controller('ClientsController', ['$scope', '$timeout', 'Client',
 
-    function clientsController($scope, $interval, Client) {
+    function clientsController($scope, $timeout, Client) {
 
         /**
          * @property clients
          * @type {Array}
          */
         $scope.clients = [];
+
+        /**
+         * @property nextIterationMaximum
+         * @type {Number}
+         */
+        $scope.nextIterationMaximum = 10000;
 
         /**
          * @property messages
@@ -71,7 +77,28 @@
 
         // Various types of client feedback events.
         $scope.$on('client/invalid_property_value', $scope.receivedFeedback);
-        $scope.$on('client/completed_strategy', $scope.receivedFeedback);
+        $scope.$on('client/completed_strategy', function completedStrategy(event, feedback) {
+
+            // Proxy the feedback.
+            $scope.receivedFeedback(event, feedback);
+
+            var client = feedback.client;
+
+            $timeout(function timeout() {
+
+                // Determine if the client should disconnect.
+                if (Math.random() > 0.5) {
+                    client.disconnect();
+                    return;
+                }
+
+                // ...Otherwise we'll assign another strategy.
+                client.assignStrategy($scope.pickStrategy());
+                client.processStrategy();
+
+            }, Math.random() * $scope.nextIterationMaximum);
+
+        });
 
         /**
          * @method setOrder

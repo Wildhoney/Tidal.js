@@ -25,11 +25,11 @@
 
         /**
          * @model ClientModel
-         * @param model {Object}
          * @constructor
          */
-        function ClientModel(model) {
-            this.model  = model;
+        function ClientModel() {
+
+            // Connect to the Socket.io server!
             this.socket = $io.connect('http://localhost:3001');
 
             // Fetch a random user to impersonate real people.
@@ -39,7 +39,7 @@
                 this.model = response.data.results[0].user;
 
                 // Begin the process of processing the assigned strategy.
-                this._processStrategy();
+                this.processStrategy();
 
             }, this));
 
@@ -90,6 +90,7 @@
              */
             assignStrategy: function assignStrategy(strategy) {
                 this.strategy = strategy;
+                console.log(strategy);
             },
 
             /**
@@ -105,13 +106,20 @@
             },
 
             /**
+             * @method disconnect
+             * @return {void}
+             */
+            disconnect: function disconnect() {
+                this.socket.disconnect();
+            },
+
+            /**
              * Begin or continue processing the strategy that the client is responsible for.
              *
-             * @method _processStrategy
+             * @method processStrategy
              * @return {void}
-             * @private
              */
-            _processStrategy: function _processStrategy() {
+            processStrategy: function processStrategy() {
 
                 // Determine if we've completed the assigned strategy.
                 if (this.strategy.steps.length === 0) {
@@ -209,7 +217,7 @@
                     }
 
                     // Continue the processing of the strategy.
-                    this._processStrategy();
+                    this.processStrategy();
 
                 }, this));
 
