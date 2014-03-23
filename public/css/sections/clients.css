@@ -39,6 +39,10 @@ section.clients table tr th.label {
     width: 120px;
 }
 
+section.clients table tr th.date {
+    width: 120px;
+}
+
 section.clients table tr td {
     padding: 10px;
     font-size: 13px;

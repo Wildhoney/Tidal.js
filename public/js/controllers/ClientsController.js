@@ -18,6 +18,12 @@
         $scope.clients = [];
 
         /**
+         * @property concurrentConnections
+         * @type {Number}
+         */
+        $scope.concurrentConnections = 10;
+
+        /**
          * @property nextIterationMaximum
          * @type {Number}
          */
