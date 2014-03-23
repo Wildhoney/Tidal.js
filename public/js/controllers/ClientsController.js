@@ -67,6 +67,8 @@
          */
         $scope.receivedFeedback = function receivedFeedback(event, feedback) {
 
+            feedback.date = new Date().getTime();
+
             // Find the partial that will output the message we're after.
             feedback.partial = 'partials/messages/' + feedback.type + '.html';
 

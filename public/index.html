@@ -35,10 +35,11 @@
                 <tr>
                     <th class="avatar"></th>
                     <th class="client"></th>
+                    <th class="date"></th>
                     <th class="label"></th>
                     <th class="message"></th>
                 </tr>
-                <tr ng-repeat="message in messages">
+                <tr ng-repeat="message in messages | orderBy: 'date': true">
                     <td><img ng-src="{{message.client.model.picture}}" /></td>
                     <td>
                         <div class="name">
@@ -47,6 +48,7 @@
                         </div>
                         <div class="strategy">Strategy: <var>{{message.client.strategy.document}}</var></div>
                     </td>
+                    <td><label>{{message.date}}</label></td>
                     <td><label class="{{message.result}}">{{message.result}}</label></td>
                     <td ng-include="message.partial"></td>
                 </tr>
