@@ -7,9 +7,9 @@
      * @author Adam Timberlake
      * @link http://github.com/Wildhoney/Tidal.js
      */
-    $app.controller('ClientsController', ['$scope', '$timeout', 'Client',
+    $app.controller('ClientsController', ['$scope', '$timeout', '$interval', 'Client',
 
-    function clientsController($scope, $timeout, Client) {
+    function clientsController($scope, $timeout, $interval, Client) {
 
         /**
          * @property clients
@@ -41,25 +41,31 @@
          */
         $scope.sortProperty = 'id';
 
-        /**
-         * @property interval
-         * @type {Number}
-         */
-        $scope.interval = 1500;
-
         // Invoked once all of the strategies have been loaded!
         $scope.$watch('isReady', function isReady(value) {
 
             if (value) {
 
-                // Create a new client model, giving it a strategy to complete, and any events
-                // that could defer that strategy.
-                var client = new Client();
-                client.assignStrategy($scope.pickStrategy());
-                client.assignResponders($scope.events.on);
+                // Responsible for adding clients to the pool if there is space based
+                // on the maximum number of concurrent connections.
+                $interval(function interval() {
 
-                // Add the new client into the array.
-                $scope.clients.push(client);
+                    // Don't do anything if we're at the maximum for the amount of
+                    // concurrent connections!
+                    if ($scope.clients.length === $scope.concurrentConnections) {
+                        return;
+                    }
+
+                    // Create a new client model, giving it a strategy to complete, and any events
+                    // that could defer that strategy.
+                    var client = new Client();
+                    client.assignStrategy($scope.pickStrategy());
+                    client.assignResponders($scope.events.on);
+
+                    // Add the new client into the array.
+                    $scope.clients.push(client);
+
+                }, Math.random() * $scope.nextIterationMaximum);
 
             }
 
@@ -77,15 +83,24 @@
 
             // Find the partial that will output the message we're after.
             feedback.partial = 'partials/messages/' + feedback.type + '.html';
-
             $scope.messages.push(feedback);
-            $scope.$apply();
-
         };
 
         // Various types of client feedback events.
         $scope.$on('client/invalid_property_value', $scope.receivedFeedback);
-        $scope.$on('client/disconnected', $scope.receivedFeedback);
+
+        $scope.$on('client/disconnected', function disconnected(event, feedback) {
+
+            // Proxy the feedback.
+            $scope.receivedFeedback(event, feedback);
+
+            // Remove the client from the array of clients.
+            var index = _.indexOf($scope.clients, feedback.client);
+            $scope.clients.splice(index, 1);
+
+        });
+
+
         $scope.$on('client/completed_strategy', function completedStrategy(event, feedback) {
 
             // Proxy the feedback.
