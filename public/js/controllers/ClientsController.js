@@ -77,6 +77,7 @@
 
         // Various types of client feedback events.
         $scope.$on('client/invalid_property_value', $scope.receivedFeedback);
+        $scope.$on('client/disconnected', $scope.receivedFeedback);
         $scope.$on('client/completed_strategy', function completedStrategy(event, feedback) {
 
             // Proxy the feedback.

@@ -24,6 +24,12 @@
         var STRATEGY_COMPLETED = 'completed';
 
         /**
+         * @constant STRATEGY_DISCONNECTED
+         * @type {String}
+         */
+        var STRATEGY_DISCONNECTED = 'disconnected';
+
+        /**
          * @model ClientModel
          * @constructor
          */
@@ -90,7 +96,6 @@
              */
             assignStrategy: function assignStrategy(strategy) {
                 this.strategy = strategy;
-                console.log(strategy);
             },
 
             /**
@@ -110,7 +115,15 @@
              * @return {void}
              */
             disconnect: function disconnect() {
+
                 this.socket.disconnect();
+
+                $rootScope.$broadcast('client/disconnected', {
+                    client: this,
+                    type: STRATEGY_DISCONNECTED,
+                    result: 'success'
+                });
+
             },
 
             /**
