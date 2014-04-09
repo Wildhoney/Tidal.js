@@ -73,7 +73,10 @@
                         this.socket.removeListener(task.event);
 
                         if (task.expect) {
-                            this._validateResponse(task.expect, arguments);
+
+                            // Recursively validate each expected property.
+                            this._validateResponse(task.expect, arguments, []);
+
                         }
 
                     }.bind(this));
@@ -110,13 +113,6 @@
          * @private
          */
         _validateResponse: function _validateResponse(expect, args, property) {
-
-            if (!property) {
-
-                // Initialise `property` if it's currently empty.
-                property = [];
-
-            }
 
             // Iterate over each expected value.
             for (var item in expect) {
