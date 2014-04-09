@@ -7,7 +7,11 @@
 
     "use strict";
 
-    var glob = require('glob');
+    var glob = require('glob'),
+        path = require('path'),
+        fs   = require('fs'),
+        yaml = require('js-yaml'),
+        q    = require('q');
 
     /**
      * @class Strategies
@@ -25,20 +29,26 @@
 
         /**
          * @method fetchAll
-         * @return {Array}
+         * @return {q.promise}
          */
         fetchAll: function fetchAll() {
 
-            glob(__dirname + '/../strategies/*.yaml', function (error, files) {
+            var deferred = q.defer();
 
-                var _files = [];
+            glob(__dirname + '/../../strategies/*.yaml', function (error, files) {
+
+                var strategies = [];
 
                 files.forEach(function forEach(file) {
-                    file = path.basename(file);
-                    _files.push(file);
+                    var name = path.basename(file);
+                    strategies[name] = yaml.safeLoad(fs.readFileSync(file, 'utf8'))
                 });
 
+                deferred.resolve(strategies);
+
             });
+
+            return deferred.promise;
 
         }
 

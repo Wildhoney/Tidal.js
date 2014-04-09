@@ -8,7 +8,6 @@
 
     var yaml       = require('js-yaml'),
         io         = require('socket.io-client'),
-        path       = require('path'),
         fs         = require('fs'),
         strategies = require(__dirname + '/module/strategies.js');
 
@@ -16,5 +15,11 @@
         url    = 'http://' + config.websocket_connection.ip_address + ':' + config.websocket_connection.port;
 
 //    var socket = io.connect(url);
-    console.log(strategies.fetchAll());
+
+    strategies.fetchAll().then(function then(strategies) {
+
+        console.log(strategies);
+
+    });
+
 })();
