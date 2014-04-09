@@ -1,17 +1,17 @@
-# Begin the process of signing the user into their account.
-- event: user/sign-in
+# Emulate changing the page number.
+- event: snapshot/default/pageNumber
   type: emit
-  with:
-    username: Wildhoney,
-    password: myPassword123
+  with: 5
 
 
 # Listen for the successful signed in event.
-- event: user/signed-in
+- event: snapshot/default/contentUpdated
   type: on
-  store: signed_in_data
+#  store: signed_in_data
   expect:
-    loggedIn: true
+    1:
+      pages:
+        current: 5
 
 
 # Fetch the credentials from the back-end.
