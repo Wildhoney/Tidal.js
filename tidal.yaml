@@ -3,3 +3,4 @@
 websocket_connection:
   ip_address: 127.0.0.1
   port: 8890
+  concurrent: 10

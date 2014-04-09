@@ -17,9 +17,7 @@
      * @class Strategies
      * @constructor
      */
-    function Strategies() {
-        this.here = 'hee';
-    }
+    function Strategies() {}
 
     /**
      * @property prototype
@@ -53,7 +51,6 @@
         }
 
     };
-
 
     module.exports = new Strategies();
 
