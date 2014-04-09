@@ -22,8 +22,12 @@
         // Iterate over the amount of connections we wish to make initially.
         for (var index = 0; index < concurrentConnections; index++) {
 
+            // Instantiate a client, establish a connection to the WebSocket server.
             var client = new Client();
             client.establishConnection(url);
+
+            // ...And then finally assign a random strategy from the pool.
+            client.addStrategy(strategies[0, (strategies.length - 1)]);
 
         }
 

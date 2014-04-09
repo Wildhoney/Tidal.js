@@ -36,10 +36,11 @@
         /**
          * @method establishConnection
          * @param url {String}
-         * @return {void}
+         * @return {Object}
          */
         establishConnection: function establishConnection(url) {
             this.socket = io.connect(url, {'force new connection': true});
+            return this.socket;
         },
 
         /**
@@ -48,6 +49,7 @@
          * @return {void}
          */
         addStrategy: function addStrategy(strategy) {
+            console.log(strategy);
             this.strategies.push(strategy);
         }
 

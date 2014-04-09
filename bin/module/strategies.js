@@ -39,7 +39,10 @@
 
                 files.forEach(function forEach(file) {
                     var name = path.basename(file);
-                    strategies[name] = yaml.safeLoad(fs.readFileSync(file, 'utf8'))
+                    strategies.push({
+                        name: name,
+                        strategy: yaml.safeLoad(fs.readFileSync(file, 'utf8'))
+                    });
                 });
 
                 deferred.resolve(strategies);
