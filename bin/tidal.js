@@ -11,7 +11,7 @@
         fs         = require('fs'),
         strategies = require(__dirname + '/module/strategies.js');
 
-    var config = yaml.safeLoad(fs.readFileSync(__dirname + '/tidal.yaml', 'utf8')),
+    var config = yaml.safeLoad(fs.readFileSync(__dirname + '/../tidal.yaml', 'utf8')),
         url    = 'http://' + config.websocket_connection.ip_address + ':' + config.websocket_connection.port;
 
 //    var socket = io.connect(url);
