@@ -7,7 +7,8 @@
 
     "use strict";
 
-    var io = require('socket.io-client');
+    var io = require('socket.io-client'),
+        _  = require('underscore');
 
     /**
      * @class Client
@@ -69,13 +70,21 @@
                     // Setup our socket to wait for this event before continuing.
                     this.socket.on(task.event, function receivedEvent() {
 
+                        if (task.ignore) {
+
+//                            var value = this._findProperty(task.ignore, arguments);
+
+//                            console.log(value);
+
+                        }
+
                         // Remove the listener event, since we've just received it.
                         this.socket.removeListener(task.event);
 
                         if (task.expect) {
 
                             // Recursively validate each expected property.
-                            this._validateResponse(task.expect, arguments, []);
+                            this._findProperty(task.expect, arguments, []);
 
                         }
 
@@ -105,51 +114,67 @@
         },
 
         /**
-         * @method _validateResponse
+         * @method _findProperty
          * @param expect {Object}
-         * @param args {Object|Array}
+         * @param data {Object|Array}
          * @param property {Array}
          * @return {void}
          * @private
          */
-        _validateResponse: function _validateResponse(expect, args, property) {
+        _findProperty: function _findProperty(expect, data, property) {
 
-            // Iterate over each expected value.
             for (var item in expect) {
 
                 // Usual suspect!
                 if (expect.hasOwnProperty(item)) {
 
-                    // We need to go deeper if this validates.
-                    if (typeof expect[item] === 'object') {
+                    // Create a string chain of all the properties.
+                    var propertyPath = (property + '.' + item).replace(/^\.+/, '');
 
-                        // Recursive call to own method.
-                        property.push(item);
-                        this._validateResponse(expect[item], args, property);
-                        return;
+                    // Find the current value.
+                    var value = this._findPropertyByString(propertyPath, data);
+
+                    // If it's an object then we need to keep iterating.
+                    if (typeof value === 'object') {
+
+                        this._findProperty(expect[item], data, propertyPath);
+                        continue;
 
                     }
 
-                    // Voila! Complete the property chain!
-                    property.push(item);
-
-                    // Will be populated with the actual value from the WebSocket server.
-                    var actualValue = {};
-
-                    // Now we can correspond the property chain to a value in the arguments
-                    // from the WebSocket event.
-                    property.forEach(function forEach(propertyItem) {
-
-                        // Resolve using `actualValue` first, otherwise the arguments.
-                        actualValue = actualValue[propertyItem] || args[propertyItem];
-
-                    });
-
-                    console.log(actualValue === expect[item]);
+                    console.log(value);
 
                 }
 
             }
+
+//            console.log(this._findProperty('0.0.word', data));
+
+        },
+
+        /**
+         * @method _findPropertyByString
+         * @param property {Object}
+         * @param data {Object}
+         * @return {String|Array|Object|Boolean}
+         * @private
+         */
+        _findPropertyByString: function _findPropertyByString(property, data) {
+
+            // Will be populated with the actual value from the WebSocket server.
+            var value = {},
+                parts = property.split(/\./gi);
+
+            // Now we can correspond the property chain to a value in the arguments
+            // from the WebSocket event.
+            parts.forEach(function forEach(propertyItem) {
+
+                // Resolve using `actualValue` first, otherwise the arguments.
+                value = value[propertyItem] || data[propertyItem];
+
+            });
+
+            return value;
 
         },
 
