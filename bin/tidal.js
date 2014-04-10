@@ -14,6 +14,41 @@
     var config = yaml.safeLoad(fs.readFileSync(__dirname + '/../tidal.yaml', 'utf8')),
         url    = 'http://' + config['websocket_connection']['ip_address'] + ':' + config['websocket_connection']['port'];
 
+    /**
+     * @method completedAll
+     * @param strategy {Object}
+     * @return {void}
+     */
+    var completedAll = function completedAll() {
+        console.log('Successfully Completed All!');
+    };
+
+    /**
+     * @method completedOne
+     * @param strategy {Object}
+     * @return {void}
+     */
+    var completedOne = function completedOne() {
+
+        console.log('Successfully Completed One!');
+
+        if (Math.random() > 0.5) {
+
+            // Randomly decide if the client should get another strategy to process.
+            this.addStrategy(strategies[strategyIndex]);
+            return;
+
+        }
+
+        // Otherwise we'll destroy the connection to the server.
+        this.destroyConnection();
+
+        setTimeout(function timeout() {
+            console.log('Client Disconnected!');
+        }, 1);
+
+    };
+
     strategies.fetchAll().then(function then(strategies) {
 
         // Determine the concurrent connections, where 10 is the default.
@@ -31,30 +66,8 @@
             client.addStrategy(strategies[strategyIndex]);
 
             // Configure the callbacks for the client messages.
-            client.on('strategy/completed/one', function strategyCompletedOne(strategy) {
-
-                console.log('Successfully Completed One!');
-
-                if (Math.random() > 0.5) {
-
-                    // Randomly decide if the client should get another strategy to process.
-                    client.addStrategy(strategies[strategyIndex]);
-                    return;
-
-                }
-
-                // Otherwise we'll destroy the connection to the server.
-                client.destroyConnection();
-
-                setTimeout(function timeout() {
-                    console.log('Client Disconnected!');
-                }, 1);
-
-            });
-
-            client.on('strategy/completed/all', function strategyCompletedAll(strategy) {
-                console.log('Successfully Completed All!');
-            });
+            client.on('strategy/completed/one', completedOne.bind(client));
+            client.on('strategy/completed/all', completedAll.bind(client));
 
         }
 
