@@ -98,10 +98,11 @@
                         if (task.expect) {
 
                             // Recursively validate each expected property.
-                            analysis = this._findProperties(task.expect, arguments, [], []),
+                            analysis = this._findProperties(task.expect, arguments, [], []);
                             result   = this._didAllPass(analysis);
 
                             if (result) {
+                                return true;
                                 // All is good!
                             }
 
@@ -159,11 +160,10 @@
         /**
          * @method _invokeCallback
          * @param eventName {String}
-         * @param args {Object|Array|String|Boolean|Number}
          * @return {void}
          * @private
          */
-        _invokeCallback: function _invokeCallback(eventName, args) {
+        _invokeCallback: function _invokeCallback(eventName) {
             this.events[eventName].call(null, Array.prototype.slice.apply(arguments));
         },
 
