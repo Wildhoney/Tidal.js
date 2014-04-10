@@ -8,7 +8,6 @@
     "use strict";
 
     var io       = require('socket.io-client'),
-        _        = require('underscore'),
         deepCopy = require('deepcopy');
 
     /**
