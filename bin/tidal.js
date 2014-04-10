@@ -30,6 +30,15 @@
             var strategyIndex = (Math.random() * (strategies.length - 1));
             client.addStrategy(strategies[strategyIndex]);
 
+            // Configure the callbacks for the client messages.
+            client.on('strategy/completed/one', function strategyCompletedOne(strategy) {
+                console.log('Completed One!');
+            });
+
+            client.on('strategy/completed/all', function strategyCompletedAll(strategy) {
+                console.log('Completed All!');
+            });
+
         }
 
     });

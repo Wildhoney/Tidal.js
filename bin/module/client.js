@@ -29,6 +29,12 @@
         interval: {},
 
         /**
+         * @property events
+         * @type {Object}
+         */
+        events: {},
+
+        /**
          * @property strategies
          * @type {Array}
          */
@@ -122,12 +128,12 @@
                 if (strategy.path.length === 0) {
 
                     this.strategies.shift();
-                    this._didCompleteStrategy(strategy);
+                    this._invokeCallback('strategy/completed/one', strategy);
 
                     // Determine whether to stop the processing or not.
                     if (this.strategies.length === 0) {
                         clearInterval(this.interval);
-                        this._didFinishAllStrategies();
+                        this._invokeCallback('strategy/completed/all', strategy);
                     }
 
                 }
@@ -141,23 +147,24 @@
         },
 
         /**
-         * @method _didFinishAllStrategies
-         * @param strategy {Object}
+         * @method on
+         * @param eventName {String}
+         * @param callback {Function}
          * @return {void}
-         * @private
          */
-        _didFinishAllStrategies: function _didFinishAllStrategies(strategy) {
-            console.log('Finished All!');
+        on: function on(eventName, callback) {
+            this.events[eventName] = callback;
         },
 
         /**
-         * @method _didCompleteStrategy
-         * @param strategy {Object}
+         * @method _invokeCallback
+         * @param eventName {String}
+         * @param args {Object|Array|String|Boolean|Number}
          * @return {void}
          * @private
          */
-        _didCompleteStrategy: function _didCompleteStrategy(strategy) {
-            console.log('Completed!');
+        _invokeCallback: function _invokeCallback(eventName, args) {
+            this.events[eventName].call(null, Array.prototype.slice.apply(arguments));
         },
 
         /**
@@ -267,8 +274,14 @@
          * @return {void}
          */
         addStrategy: function addStrategy(strategy) {
+
             this.strategies.push(strategy);
-            this._startProcessing();
+
+            // Begin processing in the next run-loop.
+            setTimeout(function timeout() {
+                this._startProcessing();
+            }.bind(this), 1);
+
         }
 
     };
