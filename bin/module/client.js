@@ -72,6 +72,12 @@
 
                         if (task.ignore) {
 
+                            var value = this._findProperties(task.ignore, arguments, [], []);
+
+                            console.log(value);
+
+                            return;
+
 //                            var value = this._findProperty(task.ignore, arguments);
 
 //                            console.log(value);
@@ -84,7 +90,7 @@
                         if (task.expect) {
 
                             // Recursively validate each expected property.
-                            var value = this._findProperties(task.expect, arguments, [], {});
+                            var value = this._findProperties(task.expect, arguments, [], []);
 
                             console.log(value);
 
@@ -117,19 +123,19 @@
 
         /**
          * @method _findProperty
-         * @param expect {Object}
+         * @param expected {Object}
          * @param data {Object|Array}
          * @param property {Array}
          * @param values {Object}
          * @return {Array|String|Boolean|Number}
          * @private
          */
-        _findProperties: function _findProperties(expect, data, property, values) {
+        _findProperties: function _findProperties(expected, data, property, values) {
 
-            for (var item in expect) {
+            for (var item in expected) {
 
                 // Usual suspect!
-                if (expect.hasOwnProperty(item)) {
+                if (expected.hasOwnProperty(item)) {
 
                     // Create a string chain of all the properties.
                     var propertyPath = (property + '.' + item).replace(/^\.+/, '');
@@ -140,12 +146,13 @@
                     // If it's an object then we need to keep iterating.
                     if (typeof value === 'object') {
 
-                        this._findProperties(expect[item], data, propertyPath, values);
+                        this._findProperties(expected[item], data, propertyPath, values);
                         continue;
 
                     }
 
-                    values[propertyPath] = value;
+                    // We've come to the end of the path so add an entry.
+                    values.push({ property: propertyPath, expected: expected[item], value: value });
 
                 }
 
