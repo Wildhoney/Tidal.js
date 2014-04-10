@@ -118,12 +118,46 @@
 
                 }
 
+                // Determine if we've finished processing this strategy.
+                if (strategy.path.length === 0) {
+
+                    this.strategies.shift();
+                    this._didCompleteStrategy(strategy);
+
+                    // Determine whether to stop the processing or not.
+                    if (this.strategies.length === 0) {
+                        clearInterval(this.interval);
+                        this._didFinishAllStrategies();
+                    }
+
+                }
+
             }.bind(this);
 
             // Clear the interval if it's a valid interval object, and begin the processing.
             clearInterval(this.interval);
             this.interval = setInterval(processor, 1);
 
+        },
+
+        /**
+         * @method _didFinishAllStrategies
+         * @param strategy {Object}
+         * @return {void}
+         * @private
+         */
+        _didFinishAllStrategies: function _didFinishAllStrategies(strategy) {
+            console.log('Finished All!');
+        },
+
+        /**
+         * @method _didCompleteStrategy
+         * @param strategy {Object}
+         * @return {void}
+         * @private
+         */
+        _didCompleteStrategy: function _didCompleteStrategy(strategy) {
+            console.log('Completed!');
         },
 
         /**
