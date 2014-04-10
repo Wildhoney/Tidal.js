@@ -118,7 +118,7 @@
          * @param expect {Object}
          * @param data {Object|Array}
          * @param property {Array}
-         * @return {void}
+         * @return {Array|String|Boolean|Number}
          * @private
          */
         _findProperty: function _findProperty(expect, data, property) {
@@ -142,20 +142,18 @@
 
                     }
 
-                    console.log(value);
-
                 }
 
             }
 
-//            console.log(this._findProperty('0.0.word', data));
+            return value;
 
         },
 
         /**
          * @method _findPropertyByString
-         * @param property {Object}
-         * @param data {Object}
+         * @param property {String}
+         * @param data {Object|Array}
          * @return {String|Array|Object|Boolean}
          * @private
          */
