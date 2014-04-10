@@ -84,7 +84,9 @@
                         if (task.expect) {
 
                             // Recursively validate each expected property.
-                            this._findProperty(task.expect, arguments, []);
+                            var value = this._findProperties(task.expect, arguments, [], {});
+
+                            console.log(value);
 
                         }
 
@@ -118,10 +120,11 @@
          * @param expect {Object}
          * @param data {Object|Array}
          * @param property {Array}
+         * @param values {Object}
          * @return {Array|String|Boolean|Number}
          * @private
          */
-        _findProperty: function _findProperty(expect, data, property) {
+        _findProperties: function _findProperties(expect, data, property, values) {
 
             for (var item in expect) {
 
@@ -137,16 +140,18 @@
                     // If it's an object then we need to keep iterating.
                     if (typeof value === 'object') {
 
-                        this._findProperty(expect[item], data, propertyPath);
+                        this._findProperties(expect[item], data, propertyPath, values);
                         continue;
 
                     }
+
+                    values[propertyPath] = value;
 
                 }
 
             }
 
-            return value;
+            return values;
 
         },
 
