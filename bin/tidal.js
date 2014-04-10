@@ -32,12 +32,28 @@
 
             // Configure the callbacks for the client messages.
             client.on('strategy/completed/one', function strategyCompletedOne(strategy) {
-                console.log('Completed One!');
-                client.addStrategy(strategies[strategyIndex]);
+
+                console.log('Successfully Completed One!');
+
+                if (Math.random() > 0.5) {
+
+                    // Randomly decide if the client should get another strategy to process.
+                    client.addStrategy(strategies[strategyIndex]);
+                    return;
+
+                }
+
+                // Otherwise we'll destroy the connection to the server.
+                client.destroyConnection();
+
+                setTimeout(function timeout() {
+                    console.log('Client Disconnected!');
+                }, 1);
+
             });
 
             client.on('strategy/completed/all', function strategyCompletedAll(strategy) {
-                console.log('Completed All!');
+                console.log('Successfully Completed All!');
             });
 
         }

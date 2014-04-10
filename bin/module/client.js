@@ -269,6 +269,14 @@
         },
 
         /**
+         * @method destroyConnection
+         * @return {void}
+         */
+        destroyConnection: function destroyConnection() {
+            this.socket.disconnect();
+        },
+
+        /**
          * @method addStrategy
          * @param strategy {Object}
          * @return {void}
