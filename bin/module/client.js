@@ -49,7 +49,8 @@
 
             var processor = function processor() {
 
-                var strategy = this.strategies[0];
+                var strategy = this.strategies[0],
+                    analysis, result;
 
                 if (typeof strategy === 'undefined') {
 
@@ -72,15 +73,16 @@
 
                         if (task.ignore) {
 
-                            var value = this._findProperties(task.ignore, arguments, [], []);
+                            // Perform an actual/expected analysis.
+                            analysis = this._findProperties(task.ignore, arguments, [], []);
+                            result   = this._didAllPass(analysis);
 
-                            console.log(value);
+                            if (result) {
 
-                            return;
+                                // We should ignore it because the event was ignored by the config.
+                                return;
 
-//                            var value = this._findProperty(task.ignore, arguments);
-
-//                            console.log(value);
+                            }
 
                         }
 
@@ -90,9 +92,12 @@
                         if (task.expect) {
 
                             // Recursively validate each expected property.
-                            var value = this._findProperties(task.expect, arguments, [], []);
+                            analysis = this._findProperties(task.expect, arguments, [], []),
+                            result   = this._didAllPass(analysis);
 
-                            console.log(value);
+                            if (result) {
+                                // All is good!
+                            }
 
                         }
 
@@ -118,6 +123,30 @@
             // Clear the interval if it's a valid interval object, and begin the processing.
             clearInterval(this.interval);
             this.interval = setInterval(processor, 1);
+
+        },
+
+        /**
+         * @method _didAllPass
+         * @param analysis {Array}
+         * @return {Boolean}
+         * @private
+         */
+        _didAllPass: function _didAllPass(analysis) {
+
+            var allPassed = true;
+
+            // Analyse the results so we know whether all of them passed or not.
+            for (var index = 0; index < analysis.length; index++) {
+
+                // Determine whether the values differ.
+                if (analysis[index].expected !== analysis[index].actual) {
+                    allPassed = false;
+                }
+
+            }
+
+            return allPassed;
 
         },
 
@@ -152,7 +181,7 @@
                     }
 
                     // We've come to the end of the path so add an entry.
-                    values.push({ property: propertyPath, expected: expected[item], value: value });
+                    values.push({ property: propertyPath, expected: expected[item], actual: value });
 
                 }
 
