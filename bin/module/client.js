@@ -59,8 +59,6 @@
                 var strategy = this.strategies[0],
                     analysis, result;
 
-                console.log(strategy);
-
                 if (typeof strategy === 'undefined') {
 
                     // Clear the interval because this client has nothing to process.
