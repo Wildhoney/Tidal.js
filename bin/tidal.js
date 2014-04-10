@@ -33,6 +33,7 @@
             // Configure the callbacks for the client messages.
             client.on('strategy/completed/one', function strategyCompletedOne(strategy) {
                 console.log('Completed One!');
+                client.addStrategy(strategies[strategyIndex]);
             });
 
             client.on('strategy/completed/all', function strategyCompletedAll(strategy) {

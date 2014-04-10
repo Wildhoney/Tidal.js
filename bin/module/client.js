@@ -7,8 +7,9 @@
 
     "use strict";
 
-    var io = require('socket.io-client'),
-        _  = require('underscore');
+    var io       = require('socket.io-client'),
+        _        = require('underscore'),
+        deepCopy = require('deepcopy');
 
     /**
      * @class Client
@@ -57,6 +58,8 @@
 
                 var strategy = this.strategies[0],
                     analysis, result;
+
+                console.log(strategy);
 
                 if (typeof strategy === 'undefined') {
 
@@ -275,7 +278,7 @@
          */
         addStrategy: function addStrategy(strategy) {
 
-            this.strategies.push(strategy);
+            this.strategies.push(deepCopy(strategy));
 
             // Begin processing in the next run-loop.
             setTimeout(function timeout() {

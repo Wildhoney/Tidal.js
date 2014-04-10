@@ -3,7 +3,6 @@
   type: emit
   with: 5
 
-
 # Listen for the successful signed in event.
 - event: snapshot/default/contentUpdated
   type: on
