@@ -2,7 +2,7 @@
  * @module Tidal
  * @author Adam Timberlake
  */
-(function Tidal() {
+(function Tidal($math) {
 
     "use strict";
 
@@ -50,7 +50,7 @@
         var getRandomStrategy = function getRandomStrategy() {
 
             // ...And then finally assign a random strategy from the pool.
-            var strategyIndex = (Math.random() * (strategies.length - 1));
+            var strategyIndex = ($math.random() * (strategies.length - 1));
             return strategies[strategyIndex];
 
         }.bind(this);
@@ -122,4 +122,4 @@
 
     });
 
-})();
+})(Math);
