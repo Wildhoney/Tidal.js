@@ -138,8 +138,13 @@
 
                     if (!result) {
 
+                        // Get all of the failures!
+                        var failures = analysis.filter(function filter(item) {
+                            return (item.failure === false);
+                        });
+
                         // Uh-oh! Something didn't validate as expected...
-                        var message = 'One of the properties failed.';
+                        var message = 'Expected: "' + failures[0].expected + '", actual: "' + failures[0].actual + '"';
                         this._invokeCallback('failed/one', strategy, message);
                         return;
 
@@ -246,7 +251,8 @@
                     }
 
                     // We've come to the end of the path so add an entry.
-                    values.push({ property: propertyPath, expected: expected[item], actual: value });
+                    var isFailure = (expected[item] === value);
+                    values.push({ property: propertyPath, expected: expected[item], actual: value, failure: isFailure });
 
                 }
 
