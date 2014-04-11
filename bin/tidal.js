@@ -28,9 +28,9 @@
         var which = function which(type) {
 
             switch (type) {
-                case 'success': return { colour: 46, icon: '✓' }; break;
-                case 'failure': return { colour: 197, icon: '×' }; break;
-                case 'info':    return { colour: 117, icon: '•' }; break;
+                case 'success': return { colour: 46, icon: '✓' };
+                case 'failure': return { colour: 197, icon: '×' };
+                case 'info':    return { colour: 117, icon: '•' };
             }
 
         };
