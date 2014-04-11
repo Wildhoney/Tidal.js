@@ -42,24 +42,16 @@
          * @return {void}
          */
         var completedOne = function completedOne(args) {
-
             console.log('Successfully Completed One: ' + args[0].name);
+        };
 
-            if (Math.random() > 0.5) {
-
-                // Randomly decide if the client should get another strategy to process.
-                this.addStrategy(getStrategy());
-                return;
-
-            }
-
-            // Otherwise we'll destroy the connection to the server.
-            this.destroyConnection();
-
-            setTimeout(function timeout() {
-                console.log('Client Disconnected!');
-            }, 1);
-
+        /**
+         * @method failedOne
+         * @param args {Array}
+         * @return {void}
+         */
+        var failedOne = function failedOne(args) {
+            console.log('Failed One: ' + args[0].name + ' because: ' + args[1]);
         };
 
         // Determine the concurrent connections, where 10 is the default.
@@ -72,11 +64,13 @@
             var client = new Client();
             client.establishConnection(url);
 
+            // Add a random strategy for the client to process.
             client.addStrategy(getStrategy());
 
             // Configure the callbacks for the client messages.
-            client.on('strategy/completed/one', completedOne.bind(client));
-            client.on('strategy/completed/all', completedAll.bind(client));
+            client.on('completed/one', completedOne.bind(client));
+            client.on('completed/all', completedAll.bind(client));
+            client.on('failed/one', failedOne.bind(client));
 
         }
 

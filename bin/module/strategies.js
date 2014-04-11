@@ -41,7 +41,7 @@
                     var name = path.basename(file);
                     strategies.push({
                         name: name,
-                        path: yaml.safeLoad(fs.readFileSync(file, 'utf8'))
+                        events: yaml.safeLoad(fs.readFileSync(file, 'utf8'))
                     });
                 });
 

@@ -42,9 +42,9 @@
 
         /**
          * @property socket
-         * @type {Object}
+         * @type {Object|null}
          */
-        socket: {},
+        socket: null,
 
         /**
          * @method _startProcessing
@@ -52,98 +52,122 @@
          * @private
          */
         _startProcessing: function _startProcessing() {
+            clearInterval(this.interval);
+            this.interval = setInterval(this._process.bind(this), 1);
+        },
 
-            var processor = function processor() {
+        /**
+         * @method _process
+         * @return {void}
+         * @private
+         */
+        _process: function _process() {
 
-                var strategy = this.strategies[0],
-                    analysis, result;
+            // Determine if the client has processed all of its assigned strategies.
+            if (this.strategies.length === 0) {
+                this._invokeCallback('completed/all');
+                clearInterval(this.interval);
+                return;
+            }
 
-                if (typeof strategy === 'undefined') {
+            // Determine if we're all finished.
+            if (this.strategies[0].events.length === 0) {
 
-                    // Clear the interval because this client has nothing to process.
-                    clearInterval(this.interval);
-                    return;
+                // Strategy has been completed!
+                var lastStrategy = this.strategies[0];
+                this.strategies.shift();
 
-                }
+                // We'll also need to emit the "completed/one" event.
+                this._invokeCallback('completed/one', lastStrategy);
+                return;
 
-                // Obtain the first event.
-                var task = strategy.path.shift();
+            }
 
-                if (task.type === 'on') {
+            // Fetch the reference to the active strategy, and the first event.
+            var strategy = this.strategies[0],
+                path     = strategy.events[0];
 
-                    // We're waiting for an event.
-                    clearInterval(this.interval);
+            // Determine which type of event to process.
+            switch (path.type) {
+                case ('emit'): this._processEmit(strategy, path); break;
+                case ('on'): this._processOn(strategy, path); break;
+            }
 
-                    // Setup our socket to wait for this event before continuing.
-                    this.socket.on(task.event, function receivedEvent() {
+        },
 
-                        if (task.ignore) {
+        /**
+         * @method _processOn
+         * @param strategy {Object}
+         * @param path {Object}
+         * @return {void}
+         * @private
+         */
+        _processOn: function _processOn(strategy, path) {
 
-                            // Perform an actual/expected analysis.
-                            analysis = this._findProperties(task.ignore, arguments, [], []);
-                            result   = this._didAllPass(analysis);
+            // Variables that contain the result of the analysis, and whether everything
+            // passed or not.
+            var analysis, result;
 
-                            if (result) {
+            // Cancel the interval because we're waiting for an event.
+            clearInterval(this.interval);
 
-                                // We should ignore it because the event was ignored by the config.
-                                return;
+            this.socket.on(path.event, function eventReceived() {
 
-                            }
+                if (path.ignore) {
 
-                        }
+                    // Determine if the received event should be ignored.
+                    analysis = this._findProperties(path.ignore, arguments, [], []);
+                    result   = this._didAllPass(analysis);
 
-                        // Remove the listener event, since we've just received it.
-                        this.socket.removeListener(task.event);
+                    if (result) {
 
-                        if (task.expect) {
+                        // We should ignore this event because the "ignore" property has
+                        // instructed us to ignore it.
+                        return;
 
-                            // Recursively validate each expected property.
-                            analysis = this._findProperties(task.expect, arguments, [], []);
-                            result   = this._didAllPass(analysis);
-
-                            if (result) {
-                                return true;
-                                // All is good!
-                            }
-
-                        }
-
-                    }.bind(this));
-
-                }
-
-                // Emit the event with the required parameters.
-                this.socket.emit(task.event, task.with);
-
-                // Determine the type of the next event. If it's "on", then we'll setup a wait
-                // event for that event name.
-                if (typeof strategy.path[0] !== 'undefined' && strategy.path[0].type === 'on') {
-
-                    // Invoke the processor method again immediately to configure the event
-                    // before the next runtime loop, in which time the event may have come and gone.
-                    processor.bind(this);
-
-                }
-
-                // Determine if we've finished processing this strategy.
-                if (strategy.path.length === 0) {
-
-                    this.strategies.shift();
-                    this._invokeCallback('strategy/completed/one', strategy);
-
-                    // Determine whether to stop the processing or not.
-                    if (this.strategies.length === 0) {
-                        clearInterval(this.interval);
-                        this._invokeCallback('strategy/completed/all', strategy);
                     }
 
+                    // Voila! We have the event and it wasn't ignored. We now need to validate
+                    // the response to ensure everything is okay with it.
+                    analysis = this._findProperties(path.expect, arguments, [], []);
+                    result   = this._didAllPass(analysis);
+
+                    // Since the event has been received, we'll remove this event from the
+                    // current strategy.
+                    strategy.events.shift();
+
+                    if (!result) {
+
+                        // Uh-oh! Something didn't validate as expected...
+                        var message = 'One of the properties failed.';
+                        this._invokeCallback('failed/one', strategy, message);
+                        return;
+
+                    }
+
+                    // Otherwise everything is lovely! So we'll need to continue the process.
+                    this._startProcessing();
+
                 }
 
-            }.bind(this);
+            }.bind(this));
 
-            // Clear the interval if it's a valid interval object, and begin the processing.
-            clearInterval(this.interval);
-            this.interval = setInterval(processor, 1);
+        },
+
+        /**
+         * @method _processEmit
+         * @param strategy {Object}
+         * @param path {Object}
+         * @return {void}
+         * @private
+         */
+        _processEmit: function _processEmit(strategy, path) {
+
+            // Emit the event to the WebSocket server.
+            this.socket.emit(path.event, path.with);
+
+            // Success so let's remove the event from the list!
+            strategy.events.shift();
 
         },
 
@@ -264,7 +288,7 @@
          * @return {Object}
          */
         establishConnection: function establishConnection(url) {
-            this.socket = io.connect(url, {'force new connection': true});
+            this.socket = io.connect(url, { 'force new connection': true });
             return this.socket;
         },
 
@@ -273,7 +297,11 @@
          * @return {void}
          */
         destroyConnection: function destroyConnection() {
-            this.socket.disconnect();
+
+            if (this.socket) {
+                this.socket.disconnect();
+            }
+
         },
 
         /**
@@ -283,6 +311,7 @@
          */
         addStrategy: function addStrategy(strategy) {
 
+            // Produce a deep clone of the strategy to prevent modifying the original.
             this.strategies.push(deepCopy(strategy));
 
             // Begin processing in the next run-loop.
