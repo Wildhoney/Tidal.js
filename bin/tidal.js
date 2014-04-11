@@ -79,7 +79,6 @@
         var failedOne = function failedOne(args) {
             console.log('Failed One: ' + args[0].name + ' because: ' + args[1]);
             this.destroyConnection();
-            addClient();
         };
 
         /**
