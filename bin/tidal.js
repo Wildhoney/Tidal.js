@@ -102,7 +102,7 @@
             console.log('Successfully Completed All!');
 
             // Determine whether we want to give this client another strategy.
-            if (Math.random() > 0.5) {
+            if ($math.random() > 0.5) {
                 this.addStrategy(getRandomStrategy());
                 return;
             }
