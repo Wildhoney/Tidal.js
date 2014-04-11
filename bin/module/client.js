@@ -146,6 +146,7 @@
                         // Uh-oh! Something didn't validate as expected...
                         var message = 'Expected: "' + failures[0].expected + '", actual: "' + failures[0].actual + '"';
                         this._invokeCallback('failed/one', strategy, message);
+                        this.strategies.shift();
                         return;
 
                     }
@@ -303,11 +304,8 @@
          * @return {void}
          */
         destroyConnection: function destroyConnection() {
-
-            if (this.socket) {
-                this.socket.disconnect();
-            }
-
+            this._invokeCallback('disconnected');
+            this.socket.disconnect();
         },
 
         /**
