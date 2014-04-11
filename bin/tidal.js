@@ -8,6 +8,7 @@
 
     var yaml       = require('js-yaml'),
         fs         = require('fs'),
+        clc        = require('cli-color'),
         strategies = require(__dirname + '/module/strategies.js'),
         Client     = require(__dirname + '/module/client.js');
 
