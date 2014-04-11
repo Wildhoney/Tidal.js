@@ -2,7 +2,7 @@
  * @module Tidal
  * @author Adam Timberlake
  */
-(function Tidal($math) {
+(function Tidal($math, $process) {
 
     "use strict";
 
@@ -38,8 +38,8 @@
         var icon = clc.xterm(which(type).colour),
             msg  = clc.xterm(7);
 
-        process.stdout.write(icon(' ' + which(type).icon + '  '));
-        process.stdout.write(msg(message) + "\n");
+        $process.stdout.write(icon(' ' + which(type).icon + '  '));
+        $process.stdout.write(msg(message) + "\n");
 
     };
 
@@ -154,4 +154,4 @@
 
     });
 
-})(Math);
+})(Math, process);
