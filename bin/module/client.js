@@ -164,7 +164,7 @@
          * @private
          */
         _invokeCallback: function _invokeCallback(eventName) {
-            this.events[eventName].call(null, Array.prototype.slice.apply(arguments));
+            this.events[eventName].call(null, Array.prototype.slice.call(arguments, 1));
         },
 
         /**
