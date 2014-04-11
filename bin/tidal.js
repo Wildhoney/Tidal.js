@@ -82,7 +82,7 @@
         var getRandomStrategy = function getRandomStrategy() {
 
             // ...And then finally assign a random strategy from the pool.
-            var strategyIndex = ($math.random() * (strategies.length - 1));
+            var strategyIndex = $math.round($math.random() * (strategies.length - 1));
             return strategies[strategyIndex];
 
         }.bind(this);
