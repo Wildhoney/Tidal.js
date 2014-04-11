@@ -12,6 +12,37 @@
         strategies = require(__dirname + '/module/strategies.js'),
         Client     = require(__dirname + '/module/client.js');
 
+    /**
+     * @method outputMessage
+     * @param type {String}
+     * @param message {String}
+     * @return {void}
+     */
+    var outputMessage = function outputMessage(type, message) {
+
+        /**
+         * @method which
+         * @param type {String}
+         * @return {void}
+         */
+        var which = function which(type) {
+
+            switch (type) {
+                case 'success': return { colour: 46, icon: '✓' }; break;
+                case 'failure': return { colour: 197, icon: '×' }; break;
+                case 'info':    return { colour: 117, icon: '•' }; break;
+            }
+
+        };
+
+        var icon = clc.xterm(which(type).colour),
+            msg  = clc.xterm(7);
+
+        process.stdout.write(icon(' ' + which(type).icon + '  '));
+        process.stdout.write(msg(message) + "\n");
+
+    };
+
     // Load the Tidal YAML configuration file for specifying the WebSocket connection credentials,
     // and other options such as the desired level of concurrency.
     var config = yaml.safeLoad(fs.readFileSync(__dirname + '/../tidal.yaml', 'utf8')),
@@ -66,7 +97,7 @@
          * @return {void}
          */
         var completedOne = function completedOne(args) {
-            console.log('Successfully Completed One: ' + args[0].name);
+            outputMessage('success', 'Strategy Complete: ' + args[0].name);
         };
 
         /**
@@ -78,7 +109,7 @@
          * @return {void}
          */
         var failedOne = function failedOne(args) {
-            console.log('Failed One: ' + args[0].name + ' because: ' + args[1]);
+            outputMessage('failure', 'Failed One: ' + args[0].name + ' because: ' + args[1]);
             this.destroyConnection();
         };
 
@@ -90,7 +121,7 @@
          * @return {void}
          */
         var disconnected = function disconnected() {
-            console.log('Client Disconnected');
+            outputMessage('info', 'Client Disconnected');
             addClient();
         };
 
@@ -100,7 +131,7 @@
          */
         var completedAll = function completedAll() {
 
-            console.log('Successfully Completed All!');
+            outputMessage('success', 'Strategies Completed');
 
             // Determine whether we want to give this client another strategy.
             if ($math.random() > 0.5) {
