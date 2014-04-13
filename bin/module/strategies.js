@@ -33,7 +33,7 @@
 
             var deferred = q.defer();
 
-            glob(__dirname + '/../../strategies/pagination.yaml', function (error, files) {
+            glob(__dirname + '/../../strategies/*.yaml', function (error, files) {
 
                 var strategies = [];
 
