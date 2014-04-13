@@ -1,25 +1,27 @@
-# Emulate changing the page number.
-- event: snapshot/default/pageNumber
-  type: emit
-  with: 5
+name: Pagination
+events:
+  # Emulate changing the page number.
+  - event: snapshot/default/pageNumber
+    type: emit
+    with: 5
 
-# Listen for the successful signed in event.
-- event: snapshot/default/contentUpdated
-  type: on
-#  store: signed_in_data
-  ignore:
-    1:
-      pages:
-        current: 1
-  expect:
-    0:
-      0:
-        id: 476349
+  # Listen for the successful signed in event.
+  - event: snapshot/default/contentUpdated
+    type: on
+  #  store: signed_in_data
+    ignore:
       1:
-        word: Abnaki
-    1:
-      pages:
-        current: 5
+        pages:
+          current: 1
+    expect:
+      0:
+        0:
+          id: 476349
+        1:
+          word: Abnaki
+      1:
+        pages:
+          current: 5
 
 
 # Fetch the credentials from the back-end.

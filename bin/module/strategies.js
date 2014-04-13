@@ -33,16 +33,23 @@
 
             var deferred = q.defer();
 
-            glob(__dirname + '/../../strategies/*.yaml', function (error, files) {
+            glob(__dirname + '/../../strategies/pagination.yaml', function (error, files) {
 
                 var strategies = [];
 
                 files.forEach(function forEach(file) {
-                    var name = path.basename(file);
-                    strategies.push({
-                        name: name,
-                        events: yaml.safeLoad(fs.readFileSync(file, 'utf8'))
-                    });
+
+                    var strategy = yaml.safeLoad(fs.readFileSync(file, 'utf8'));
+
+                    if (!strategy.name) {
+                        // Assume the name is the filename if one hasn't been set.
+                        strategy.name = path.basename(file);
+                    }
+
+                    strategies.push(strategy);
+
+
+
                 });
 
                 deferred.resolve(strategies);
