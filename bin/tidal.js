@@ -134,7 +134,7 @@
             outputMessage('success', 'Strategies Completed');
 
             // Determine whether we want to give this client another strategy.
-            if ($math.random() > 0.5) {
+            if (config.after_complete === 'random' && $math.random() > 0.5) {
                 this.addStrategy(getRandomStrategy());
                 return;
             }

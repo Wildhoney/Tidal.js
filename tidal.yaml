@@ -1,5 +1,6 @@
 # Configure for Tidal.js
 # https://github.com/Wildhoney/Tidal.js
+after_complete: disconnect
 websocket_connection:
   ip_address: 127.0.0.1
   port: 8890
