@@ -48,8 +48,6 @@
 
                     strategies.push(strategy);
 
-
-
                 });
 
                 deferred.resolve(strategies);
