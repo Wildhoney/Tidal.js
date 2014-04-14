@@ -16,7 +16,7 @@
     "url": "https://github.com/Wildhoney/Socket.io-Benchmark/issues"
   },
   "bin": {
-    "tidal": "./bin/tidal.js"
+    "tidal": "bin/Tidal.js"
   },
   "homepage": "https://github.com/Wildhoney/Socket.io-Benchmark",
   "dependencies": {

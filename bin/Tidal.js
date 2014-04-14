@@ -149,7 +149,10 @@
 
         // Iterate over the amount of connections we wish to make initially.
         for (var index = 0; index < concurrentConnections; index++) {
-            addClient();
+
+
+
+//            addClient();
         }
 
     });
