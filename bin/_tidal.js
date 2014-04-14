@@ -9,8 +9,8 @@
     var yaml       = require('js-yaml'),
         fs         = require('fs'),
         clc        = require('cli-color'),
-        strategies = require(__dirname + '/module/strategies.js'),
-        Client     = require(__dirname + '/module/client.js');
+        strategies = require(__dirname + '/component/strategies.js'),
+        Client     = require(__dirname + '/component/client.js');
 
     /**
      * @method outputMessage
