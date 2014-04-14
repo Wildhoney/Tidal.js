@@ -6,7 +6,7 @@
     "Adam Timberlake <adam.timberlake@gmail.com>"
   ],
   "description": "Socket.io benchmarking with real-time web-based statistics.",
-  "main": "bin/tidal.js",
+  "main": "bin/Tidal.js",
   "license": "MIT",
   "ignore": [
     "**/.*",
