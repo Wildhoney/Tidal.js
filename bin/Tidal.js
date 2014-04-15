@@ -9,6 +9,7 @@
     var yaml       = require('js-yaml'),
         fs         = require('fs'),
         clc        = require('cli-color'),
+        cp         = require('child_process'),
         strategies = require(__dirname + '/component/Strategies.js'),
         Client     = require(__dirname + '/component/Client.js');
 
@@ -60,16 +61,36 @@
          */
         var addClient = function addClient() {
 
-            // Instantiate a client, establish a connection to the WebSocket server.
-            var client = new Client();
-            client.establishConnection(url);
-            client.addStrategy(getRandomStrategy());
+            // Fork a new client for processing a strategy.
+            var client = cp.fork(__dirname + '/component/Client.js');
 
-            // Configure the callbacks for the client messages.
-            client.on('completed/one', completedOne.bind(client));
-            client.on('completed/all', completedAll.bind(client));
-            client.on('failed/one', failedOne.bind(client));
-            client.on('disconnected', disconnected.bind(client));
+            // Connect to the WebSocket server, and assign a random strategy.
+            client.send({ type: 'websocket_url', value: url });
+            client.send({ type: 'add_strategy', value: getRandomStrategy() });
+
+            // When a message has been received from the client process.
+            client.on('message', function receivedMessage(args) {
+
+                switch (args.type) {
+
+                    // Once the client has completed one strategy.
+                    case 'strategy_complete': completedOne(args.value); break;
+
+                    // ...And completed all assigned strategies.
+                    case 'strategies_complete': completedAll(client); break;
+
+                    // When the client has been disconnected.
+                    case 'client_disconnected': disconnected(); break;
+
+                    // When an error has occurred when processing a strategy.
+                    case 'strategy_failed':
+                        args.value.client = client;
+                        failedOne(args.value);
+                        break;
+
+                }
+
+            });
 
         };
 
@@ -93,11 +114,11 @@
          * the "completed/one" event.
          *
          * @method completedOne
-         * @param args {Array}
+         * @param strategy {Object}
          * @return {void}
          */
-        var completedOne = function completedOne(args) {
-            outputMessage('success', 'Strategy Complete: ' + args[0].name);
+        var completedOne = function completedOne(strategy) {
+            outputMessage('success', 'Strategy Complete: ' + strategy.name);
         };
 
         /**
@@ -105,12 +126,12 @@
          * connection, and to then disconnect them, and to spawn a new user.
          *
          * @method failedOne
-         * @param args {Array}
+         * @param args {Object}
          * @return {void}
          */
         var failedOne = function failedOne(args) {
-            outputMessage('failure', 'Failed One: ' + args[0].name + ' because: ' + args[1]);
-            this.destroyConnection();
+            outputMessage('failure', 'Failed One: ' + args.strategy.name + ' because: ' + args.message);
+            args.client.send({ type: 'disconnect', value: null });
         };
 
         /**
@@ -127,20 +148,21 @@
 
         /**
          * @method completedAll
+         * @param client {Client}
          * @return {void}
          */
-        var completedAll = function completedAll() {
+        var completedAll = function completedAll(client) {
 
             outputMessage('success', 'Strategies Completed');
 
             // Determine whether we want to give this client another strategy.
             if (config['after_complete'] === 'random' && $math.random() > 0.5) {
-                this.addStrategy(getRandomStrategy());
+                client.send({ type: 'add_strategy', value: getRandomStrategy() });
                 return;
             }
 
             // Otherwise we'll disconnect the client.
-            this.destroyConnection();
+            client.send({ type: 'disconnect', value: null });
 
         };
 
@@ -149,10 +171,7 @@
 
         // Iterate over the amount of connections we wish to make initially.
         for (var index = 0; index < concurrentConnections; index++) {
-
-
-
-//            addClient();
+            addClient();
         }
 
     });

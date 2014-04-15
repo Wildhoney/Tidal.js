@@ -3,7 +3,7 @@
  * @submodule Client
  * @author Adam Timberlake
  */
-(function TidalClient() {
+(function TidalClient($process) {
 
     "use strict";
 
@@ -65,7 +65,7 @@
 
             // Determine if the client has processed all of its assigned strategies.
             if (this.strategies.length === 0) {
-                this._invokeCallback('completed/all');
+                $process.send({ type: 'strategies_complete', value: null });
                 clearInterval(this.interval);
                 return;
             }
@@ -76,9 +76,7 @@
                 // Strategy has been completed!
                 var lastStrategy = this.strategies[0];
                 this.strategies.shift();
-
-                // We'll also need to emit the "completed/one" event.
-                this._invokeCallback('completed/one', lastStrategy);
+                $process.send({ type: 'strategy_complete', value: lastStrategy });
                 return;
 
             }
@@ -146,6 +144,7 @@
                         // Uh-oh! Something didn't validate as expected...
                         var message = 'Expected: "' + failures[0].expected + '", actual: "' + failures[0].actual + '"';
                         this._invokeCallback('failed/one', strategy, message);
+                        $process.send({ type: 'strategy_failed', value: { strategy: strategy, message: message }});
                         this.strategies.shift();
                         return;
 
@@ -194,7 +193,11 @@
          * @private
          */
         _invokeCallback: function _invokeCallback(eventName) {
-            this.events[eventName].call(null, Array.prototype.slice.call(arguments, 1));
+
+            if (this.events[eventName]) {
+                this.events[eventName].call(null, Array.prototype.slice.call(arguments, 1));
+            }
+
         },
 
         /**
@@ -304,7 +307,7 @@
          * @return {void}
          */
         destroyConnection: function destroyConnection() {
-            this._invokeCallback('disconnected');
+            $process.send({ type: 'client_disconnected', value: null });
             this.socket.disconnect();
         },
 
@@ -327,6 +330,24 @@
 
     };
 
-    module.exports = Client;
+    var client = new Client();
 
-})();
+    // Listen for messages from the main process.
+    $process.on('message', function receivedMessage(args) {
+
+        switch (args.type) {
+
+            // Establishing a connection to the WebSocket server.
+            case 'websocket_url': client.establishConnection(args.value); break;
+
+            // Adding a strategy for the client to process.
+            case 'add_strategy': client.addStrategy(args.value); break;
+
+            // When the client should be disconnected from the server.
+            case 'disconnect': client.destroyConnection(); break;
+
+        }
+
+    });
+
+})(process);
