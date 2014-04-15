@@ -10,8 +10,7 @@
         fs         = require('fs'),
         clc        = require('cli-color'),
         cp         = require('child_process'),
-        strategies = require(__dirname + '/component/Strategies.js'),
-        Client     = require(__dirname + '/component/Client.js');
+        strategies = require(__dirname + '/component/Strategies.js');
 
     /**
      * @method outputMessage
