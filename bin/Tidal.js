@@ -124,7 +124,6 @@
             iterations++;
             outputMessage('success', 'Strategy Complete: ' + strategy.name);
 
-            // Exit Node.js if we've satisfied the desired iterations.
             if (iterations === config.iterations) {
 
                 // ..But first we need to end all of the child processes.
@@ -132,7 +131,7 @@
                     client.kill();
                 });
 
-
+                // Exit Node.js if we've satisfied the desired iterations.
                 $process.exit(1);
 
             }
