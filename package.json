@@ -28,6 +28,7 @@
     "js-yaml": "~3.0.2",
     "q": "~1.0.1",
     "deepcopy": "~0.3.3",
-    "cli-color": "~0.2.3"
+    "cli-color": "~0.2.3",
+    "grunt-contrib-compress": "~0.8.0"
   }
 }
