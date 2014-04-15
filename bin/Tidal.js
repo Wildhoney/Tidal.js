@@ -23,7 +23,7 @@
         /**
          * @method which
          * @param type {String}
-         * @return {void}
+         * @return {Object}
          */
         var which = function which(type) {
 
@@ -45,8 +45,10 @@
 
     // Load the Tidal YAML configuration file for specifying the WebSocket connection credentials,
     // and other options such as the desired level of concurrency.
-    var config = yaml.safeLoad(fs.readFileSync(__dirname + '/../tidal.yaml', 'utf8')),
-        url    = 'http://' + config['websocket_connection']['ip_address'] + ':' + config['websocket_connection']['port'];
+    var config     = yaml.safeLoad(fs.readFileSync(__dirname + '/../tidal.yaml', 'utf8')),
+        url        = 'http://' + config['websocket_connection']['ip_address'] + ':' + config['websocket_connection']['port'],
+        iterations = 0,
+        clients    = [];
 
     // Fetch all of the user defined strategies.
     strategies.fetchAll().then(function then(strategies) {
@@ -62,6 +64,7 @@
 
             // Fork a new client for processing a strategy.
             var client = cp.fork(__dirname + '/component/Client.js');
+            clients.push(client);
 
             // Connect to the WebSocket server, and assign a random strategy.
             client.send({ type: 'websocket_url', value: url });
@@ -117,7 +120,23 @@
          * @return {void}
          */
         var completedOne = function completedOne(strategy) {
+
+            iterations++;
             outputMessage('success', 'Strategy Complete: ' + strategy.name);
+
+            // Exit Node.js if we've satisfied the desired iterations.
+            if (iterations === config.iterations) {
+
+                // ..But first we need to end all of the child processes.
+                clients.forEach(function forEach(client) {
+                    client.kill();
+                });
+
+
+                $process.exit(1);
+
+            }
+
         };
 
         /**
