@@ -1,6 +1,6 @@
 {
   "name": "tidal.js",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Socket.io benchmarking with real-time web-based statistics.",
   "main": "bin/tidal.js",
   "scripts": {
